@@ -2,48 +2,48 @@
 
 ## Project Overview
 
-InsightHub is a multi-service career guidance and labor-market intelligence platform built for a graduation project. It combines a Flutter client, an ASP.NET Core backend, and a Python analytics service to support authentication, assessments, profile management, job/news discovery, and analytics-driven dashboards.
+InsightHub is a graduation-project platform for career guidance, assessment, and labor-market exploration. It combines a Flutter client, an ASP.NET Core backend, and a Python analytics service to support authentication, profile management, assessment workflows, jobs/news retrieval, and analytics dashboards.
 
 Core capabilities include:
 
-- Account registration, login, OTP verification, profile management, and account deletion
-- Employee survey flow and non-employee career matching flow
-- HR interview quiz generation and scoring
-- Jobs and news retrieval by track/category
-- Analytics dashboards for personalized home and explore views
+- User registration, login, OTP verification, and profile management
+- Employee survey and non-employee career matching workflows
+- HR interview quiz generation and result evaluation
+- Jobs and news retrieval by selected tracks/categories
+- Personalized home/explore analytics dashboards
 - Scheduled ingestion and refresh workflows for market data
 
 ## User Guide
 
-This section explains how to run the current project locally after cloning the repository.
+This section describes how to run the current repository locally after cloning it.
 
-### Repository Layout
+### Repository Structure
 
-| Path | Role |
+| Path | Purpose |
 | --- | --- |
 | `src/Backend Department` | ASP.NET Core Web API solution |
-| `src/Analytics Department` | FastAPI analytics service and data pipeline |
+| `src/Analytics Department` | FastAPI analytics service and data-refresh pipeline |
 | `src/Flutter Department` | Flutter client application |
 
-### Required Software
+### Required Tools
 
 | Tool | Recommended Version | Why it is needed |
 | --- | --- | --- |
 | Git | Latest | Clone and update the repository |
-| .NET SDK | 10.0 | Required by all backend projects targeting `net10.0` |
-| SQL Server | 2019+ / Express / LocalDB | Main backend database and Hangfire storage |
-| Python | 3.10+ | Analytics API and pipeline scripts |
-| Flutter SDK | Stable release compatible with Dart `^3.9.2` | Client runtime and build toolchain |
-| ODBC Driver 17 for SQL Server | Current Windows driver | Required by the analytics data pipeline when using SQL Server |
+| .NET SDK | 10.0 | Backend projects target `net10.0` |
+| SQL Server | 2019+ / Express / LocalDB | Primary database and Hangfire storage |
+| Python | 3.10+ | Analytics API and refresh scripts |
+| Flutter SDK | Stable release compatible with Dart `^3.9.2` | Client build/runtime |
+| ODBC Driver 17 for SQL Server | Current Windows version | Needed by the analytics pipeline when using SQL Server |
 
-### Current Technology Stack
+### Technologies in Use
 
 | Layer | Technologies |
 | --- | --- |
 | Frontend | Flutter, Dart, `flutter_bloc`, `dio`, `flutter_dotenv`, `flutter_secure_storage`, Syncfusion charts/maps/treemap |
 | Backend | ASP.NET Core, EF Core, SQL Server, ASP.NET Identity, JWT, Hangfire, Swagger/OpenAPI |
-| Analytics | FastAPI, Uvicorn, Pandas, NumPy, SQLAlchemy, spaCy, `python-dotenv` |
-| External integrations | Adzuna Jobs API, NewsAPI |
+| Analytics | FastAPI, Uvicorn, Pandas, NumPy, SQLAlchemy, `python-dotenv`, spaCy |
+| External APIs | Adzuna Jobs API, NewsAPI, QuizAPI |
 
 ### 1. Clone the Repository
 
@@ -67,11 +67,19 @@ The backend solution contains four projects:
 dotnet restore "src/Backend Department/InsightHub.sln"
 ```
 
-#### Create local backend configuration
+#### Backend configuration
 
-Create this file:
+The backend now includes a tracked baseline config file:
 
-`src/Backend Department/InsightHub.API/appsettings.Development.json`
+- `src/Backend Department/InsightHub.API/appsettings.json`
+
+This file is in the correct runtime location for ASP.NET Core, but it currently contains environment-specific values and secrets. Another developer should not rely on those values as-is.
+
+Create a local override file for your machine:
+
+- `src/Backend Department/InsightHub.API/appsettings.Development.json`
+
+Recommended local template:
 
 ```json
 {
@@ -81,31 +89,43 @@ Create this file:
   "Jwt": {
     "Key": "replace-with-a-long-random-secret",
     "Issuer": "InsightHub",
-    "Audience": "InsightHub.Client"
-  },
-  "DataAnalysis": {
-    "BaseUrl": "http://127.0.0.1:8000"
+    "Audience": "InsightHubUsers"
   },
   "Adzuna": {
     "AppId": "your-adzuna-app-id",
     "AppKey": "your-adzuna-app-key"
   },
+  "VerifierEmail": {
+    "Email": "your-email@example.com",
+    "AppPassword": "your-app-password"
+  },
   "NewsApi": {
     "ApiKey": "your-newsapi-key"
+  },
+  "QuizAPI": {
+    "api_key": "your-quizapi-key"
+  },
+  "DataAnalysis": {
+    "BaseUrl": "http://127.0.0.1:8000"
   }
 }
 ```
 
+Configuration sections used by the backend:
+
+| Section | Used for |
+| --- | --- |
+| `ConnectionStrings:DefaultConnection` | EF Core, SQL Server, Hangfire storage |
+| `Jwt` | Authentication token signing and validation |
+| `Adzuna` | Jobs ingestion/query integration |
+| `VerifierEmail` | OTP email sending |
+| `NewsApi` | News ingestion/query integration |
+| `QuizAPI` | Interview questions synchronization |
+| `DataAnalysis` | Backend-to-analytics proxy base URL |
+
 #### Database setup
 
-The backend uses:
-
-- Entity Framework Core for persistence
-- SQL Server as the primary database
-- ASP.NET Identity for users/authentication
-- Hangfire with SQL Server storage for recurring jobs
-
-Apply existing migrations:
+Apply the existing migrations:
 
 ```powershell
 dotnet ef database update --project "src/Backend Department/InsightHub.Infrastructure" --startup-project "src/Backend Department/InsightHub.API"
@@ -123,23 +143,23 @@ dotnet tool install --global dotnet-ef
 dotnet run --project "src/Backend Department/InsightHub.API"
 ```
 
-Current local development URL from [launchSettings.json](</D:/Graduation Projects/Comp Project/InsightHub/src/Backend Department/InsightHub.API/Properties/launchSettings.json>):
+Current development URL from [launchSettings.json](</D:/Graduation Projects/Comp Project/InsightHub/src/Backend Department/InsightHub.API/Properties/launchSettings.json>):
 
 - `http://localhost:5043`
 
-Important startup behavior:
+Important runtime behavior:
 
-- Swagger UI is enabled in development mode.
+- Swagger UI is enabled in development.
 - Hangfire server starts automatically.
 - Seed routines run on startup.
-- `DummyDataSeeder` can create a large batch of dummy market users and responses on first run, so the first startup may take longer than subsequent runs.
+- `DummyDataSeeder` may create a substantial set of dummy market users on first run.
 
 ### 3. Analytics Service Setup
 
-The analytics section has two distinct parts:
+The analytics section contains:
 
-- `Analytics & Visualization`: FastAPI dashboard service
-- `Cleaning & Modeling`: data collection, cleaning, caching, and refresh pipeline
+- `Analytics & Visualization`: FastAPI dashboard API
+- `Cleaning & Modeling`: data acquisition, cleaning, caching, and refresh pipeline
 
 #### Create and activate a virtual environment
 
@@ -148,7 +168,7 @@ python -m venv .venv
 .venv\Scripts\activate
 ```
 
-#### Install Python dependencies
+#### Install dependencies
 
 ```powershell
 pip install -r "src/Analytics Department/requirements.txt"
@@ -160,9 +180,9 @@ Create or update:
 
 - `src/Analytics Department/.env`
 
-Use [env example.txt](</D:/Graduation Projects/Comp Project/InsightHub/src/Analytics Department/env example.txt>) as the template.
+Use [env example.txt](</D:/Graduation Projects/Comp Project/InsightHub/src/Analytics Department/env example.txt>) as the reference.
 
-Recommended local values:
+Recommended local template:
 
 ```dotenv
 ADZUNA_API_ID=
@@ -187,36 +207,36 @@ cd "src/Analytics Department/Analytics & Visualization"
 python main.py
 ```
 
-The analytics API exposes:
+The analytics service exposes:
 
 - `POST /api/home`
 - `POST /api/explore`
 
-#### Optional: run the analytics refresh pipeline
+#### Optional: run the analytics refresh service
 
-The file [update.py](</D:/Graduation Projects/Comp Project/InsightHub/src/Analytics Department/Cleaning & Modeling/update.py>) is not a one-shot script. It runs as a long-lived scheduled process that repeatedly refreshes analytics data and tracks its own run state.
+[update.py](</D:/Graduation Projects/Comp Project/InsightHub/src/Analytics Department/Cleaning & Modeling/update.py>) is a long-running scheduled process, not a one-shot script. It manages its own run-state file and refreshes data on a timed loop.
 
-Run it in a separate terminal only if you want the local environment to refresh market data continuously:
+Run it in a separate terminal only if you want the local environment to keep refreshing analytics data:
 
 ```powershell
 cd "src/Analytics Department/Cleaning & Modeling"
 python update.py
 ```
 
-Notes:
+Operational notes:
 
 - The analytics API reads `src/Analytics Department/Shared Data/search_data.json` at startup.
 - That file exists in the current repository state.
-- If it becomes missing or stale, the analytics API will still start, but dashboard results may be empty or outdated until the pipeline refreshes the shared data.
+- If the file becomes stale or missing, the analytics API still starts but dashboard responses may be empty or outdated.
 
 ### 4. Flutter Client Setup
 
-The Flutter app has been refactored into a more modular structure centered around:
+The Flutter app is now mostly organized around:
 
 - `lib/core`
 - `lib/feature`
 
-Legacy folders such as `lib/views`, `lib/widget`, `lib/services`, and `lib/cuibt` still exist alongside the newer feature-based structure, so the current app is partially transitional.
+Legacy folders such as `lib/views`, `lib/widget`, `lib/services`, `lib/model`, and `lib/cuibt` still coexist with the newer structure, so the app is currently in a transitional state rather than a full clean-slate refactor.
 
 #### Install dependencies
 
@@ -225,31 +245,29 @@ cd "src/Flutter Department"
 flutter pub get
 ```
 
-#### Create the Flutter environment file
+#### Configure the frontend API base URL
 
-The app now loads configuration from `.env` using `flutter_dotenv`.
-
-Copy:
-
-- `src/Flutter Department/.env.example`
-
-to:
+The current app loads its base URL from:
 
 - `src/Flutter Department/.env`
 
-Example content for local backend access:
+Use the provided example:
+
+- `src/Flutter Department/.env.example`
+
+Example local value:
 
 ```dotenv
 BASE_URL=http://localhost:5043/api
 ```
 
-If you run the app on an Android emulator, use:
+For Android emulator:
 
 ```dotenv
 BASE_URL=http://10.0.2.2:5043/api
 ```
 
-If you run on a physical device, use the host machine IP reachable from the device.
+For physical devices, replace `localhost` with the host machine IP accessible from the device.
 
 #### Run the Flutter app
 
@@ -257,7 +275,7 @@ If you run on a physical device, use the host machine IP reachable from the devi
 flutter run
 ```
 
-### 5. Recommended Local Startup Order
+### 5. Recommended Startup Order
 
 Start the system in this order:
 
@@ -265,14 +283,14 @@ Start the system in this order:
 2. Analytics API
 3. ASP.NET Core backend
 4. Flutter client
-5. Optional analytics refresh pipeline
+5. Optional analytics refresh process
 
-Why this order matters:
+This order matters because:
 
-- The backend requires a working database connection.
-- The backend proxies dashboard requests to the analytics API.
-- The Flutter client depends on the backend base URL.
-- The optional analytics refresh pipeline updates the shared analytics dataset used by the FastAPI service.
+- the backend depends on the database
+- the backend proxies dashboard requests to the analytics API
+- the Flutter app depends on the backend base URL
+- the refresh service feeds the analytics data source used by the FastAPI process
 
 ### 6. Docker
 
@@ -282,20 +300,20 @@ No `Dockerfile` or `docker-compose` files are present in the current repository 
 
 | Issue | Likely cause | Action |
 | --- | --- | --- |
-| Backend fails with `Jwt:Key is missing` | Missing backend config file | Create `appsettings.Development.json` with the `Jwt` section |
-| Backend fails to start Hangfire or EF Core | Invalid SQL Server connection string | Verify `ConnectionStrings:DefaultConnection` |
-| Backend analytics endpoints return empty payloads | Analytics API unreachable or shared data missing | Start the analytics API and verify `DataAnalysis:BaseUrl` |
-| Flutter app cannot connect to API | `BASE_URL` not set correctly in `.env` | Update `src/Flutter Department/.env` |
-| Flutter login/register succeeds inconsistently across screens | Some legacy frontend files still coexist with new services | Prefer flows wired through `lib/core/services/api_service.dart` |
-| Analytics data is stale | Refresh pipeline not running | Run `python update.py` in `Cleaning & Modeling` if you need live refresh behavior |
-| News/jobs ingestion is empty | Missing Adzuna or NewsAPI credentials | Configure `Adzuna` and `NewsApi` keys in backend config |
-| Analytics pipeline cannot connect to SQL Server | Missing ODBC driver or wrong DB credentials | Install ODBC Driver 17 and verify analytics `.env` values |
+| Backend fails with `Jwt:Key is missing` | Missing or invalid config override | Verify `appsettings.Development.json` and `Jwt` settings |
+| Backend fails to connect to SQL Server | Invalid `DefaultConnection` | Check SQL Server instance name and permissions |
+| OTP flow fails | `VerifierEmail` is missing or invalid | Configure email and app password correctly |
+| Interview question sync fails | `QuizAPI:api_key` missing | Add a valid QuizAPI key |
+| Analytics endpoints return empty responses | Analytics API unreachable or stale shared data | Start the FastAPI service and verify `DataAnalysis:BaseUrl` |
+| Flutter cannot reach the backend | Wrong `BASE_URL` in `.env` | Point it to your local backend URL |
+| Jobs/news retrieval is empty | Missing Adzuna or NewsAPI credentials | Configure `Adzuna` and `NewsApi` settings |
+| Analytics pipeline fails against SQL Server | Wrong DB settings or missing ODBC driver | Install ODBC Driver 17 and review analytics `.env` |
 
 ## System Design & Architecture
 
-### High-Level Architecture
+### Overall Architecture
 
-InsightHub is organized as a client application backed by two server-side components: a transactional API and a dedicated analytics service.
+InsightHub is a multi-service system with a client app, a transactional backend, and a dedicated analytics service.
 
 ```mermaid
 flowchart LR
@@ -303,15 +321,16 @@ flowchart LR
     F --> B[ASP.NET Core API]
     B --> DB[(SQL Server)]
     B --> A[FastAPI Analytics API]
-    B --> E1[Adzuna API]
-    B --> E2[NewsAPI]
+    B --> J[Adzuna API]
+    B --> N[NewsAPI]
+    B --> Q[QuizAPI]
     A --> S[Shared Analytics Data]
     A --> DB
 ```
 
 ### Backend Architecture
 
-The backend uses a layered .NET architecture.
+The backend follows a layered design.
 
 ```mermaid
 flowchart TD
@@ -325,80 +344,81 @@ flowchart TD
 
 | Layer | Responsibility |
 | --- | --- |
-| `InsightHub.API` | Controllers, auth, middleware, rate limiting, startup configuration |
-| `InsightHub.Application` | Interfaces and DTO/view-model contracts |
-| `InsightHub.Domain` | Core entities and enums |
-| `InsightHub.Infrastructure` | EF Core persistence, seeding, migrations, external services, DI registrations |
+| `InsightHub.API` | Controllers, middleware, authentication, rate limiting, startup configuration |
+| `InsightHub.Application` | Contracts, interfaces, DTOs, and view models |
+| `InsightHub.Domain` | Entities and enums |
+| `InsightHub.Infrastructure` | EF Core persistence, external integrations, seeding, migrations, DI |
 
-### Main Modules
+### Main Components
 
-#### Backend
+#### Backend API
 
-Important backend controllers:
+Key controllers:
 
 | Controller | Responsibility |
 | --- | --- |
-| `AccountController` | Registration, login, OTP, profile, logout, account deletion |
-| `SurveyController` | Employee assessment questions and submission |
-| `CareerQuizController` | Non-employee question flow and stored result retrieval |
-| `InterviewQuizController` | Track-specific interview questions and submission |
-| `UserSubmission` | Employment-status navigation decision input |
-| `NewsController` | Category-based news retrieval |
-| `JobOffersController` | Category-based related jobs retrieval |
-| `AnalysisProxyController` | Proxies home/explore analytics requests to the FastAPI service |
+| `AccountController` | Register, login, OTP, profile, logout, account deletion |
+| `SurveyController` | Employee survey question retrieval and submission |
+| `CareerQuizController` | Non-employee quiz retrieval, full-match submission, stored results |
+| `InterviewQuizController` | HR/interview question retrieval and answer submission |
+| `UserSubmission` | Determines employment-status-driven flow/navigation |
+| `NewsController` | Track-based article retrieval |
+| `JobOffersController` | Track-based jobs retrieval |
+| `AnalysisProxyController` | Proxies home and explore analytics requests to FastAPI |
 
-Important backend services:
+Key backend services:
 
 | Service | Responsibility |
 | --- | --- |
-| `AccountService` | Identity, JWT generation, OTP, profile updates |
-| `SurveyService` | Employee survey workflow |
-| `CareerQuizService` | Career-matching logic and result storage |
-| `InterviewQuizService` | Interview quiz retrieval and scoring |
-| `UserSubmissionService` | Profile-driven navigation state |
-| `JobOffersQueryService` | Job retrieval layer |
-| `NewsQueryService` | News retrieval layer |
-| `JobSyncService` | Scheduled jobs synchronization |
-| `NewsIngestionService` | Scheduled news ingestion |
-| `InterviewQuestionsSyncService` | Scheduled interview question sync |
-| `AdzunaService` | External jobs API client |
-| `NewsService` | External news API client |
+| `AccountService` | Identity, JWT issuance, OTP verification, profile updates |
+| `SurveyService` | Employee assessment workflow |
+| `CareerQuizService` | Match calculation and result persistence |
+| `CareerQuizDecisionEngine` | Career match decision logic |
+| `InterviewQuizService` | HR quiz retrieval and scoring |
+| `InterviewQuestionsSyncService` | Pulls questions from QuizAPI |
+| `UserSubmissionService` | Employment status and routing state |
+| `NewsQueryService` | Reads stored news for API responses |
+| `NewsIngestionService` | Refreshes and stores articles |
+| `JobOffersQueryService` | Reads stored job offers for API responses |
+| `JobSyncService` | Refreshes and stores job offers |
+| `AdzunaService` | Outbound jobs API client |
+| `NewsService` | Outbound news API client |
 
-#### Analytics
+#### Analytics Service
 
-The analytics service is designed around a reusable analyzer and dynamic page configuration.
+The analytics service is built around a reusable `Analyzer` and dynamic dashboard configuration.
 
 | Module | Responsibility |
 | --- | --- |
-| `Analytics.py` | `Analyzer` class for KPI, distribution, and time-series operations |
-| `Configs.py` | Dashboard widget definitions for home and explore pages |
-| `Routes.py` | Dynamic page endpoint registration |
-| `Services.py` | Page response assembly using `PageBuilder` |
-| `main.py` | FastAPI application startup and route wiring |
-| `Cleaning & Modeling/update.py` | Long-running scheduled data refresh pipeline |
-| `Cleaning & Modeling/Requesting.py` | API client layer for data acquisition |
-| `Cleaning & Modeling/Handling.py` | Local data handling utilities |
+| `Analytics.py` | Analytical operations over the loaded dataset |
+| `Configs.py` | Home/explore widget definitions and resolver wiring |
+| `Routes.py` | Dynamic page route generation |
+| `Services.py` | `PageBuilder` response assembly |
+| `main.py` | FastAPI bootstrap and router registration |
+| `Cleaning & Modeling/Requesting.py` | Data acquisition client layer |
+| `Cleaning & Modeling/Handling.py` | Local file/data handling |
 | `Cleaning & Modeling/Caching.py` | Cache management |
-| `Cleaning & Modeling/Cleaning.py` | Large data-cleaning and transformation layer |
+| `Cleaning & Modeling/Cleaning.py` | Transformation and cleaning logic |
+| `Cleaning & Modeling/update.py` | Long-running scheduled refresh process |
 
-#### Flutter
+#### Flutter Client
 
-The frontend is now primarily feature-based:
+Current frontend structure:
 
-| Folder | Responsibility |
+| Area | Responsibility |
 | --- | --- |
-| `lib/core` | Configuration, API services, storage, shared utilities |
-| `lib/feature/app_start` | Splash, onboarding, and app-entry views |
-| `lib/feature/auth` | Registration, login, OTP, and auth-specific widgets/cubits |
-| `lib/feature/home_and_explore` | Dashboard, explore/search, dynamic chart rendering |
-| `lib/feature/menu_Services/career_and_hr` | Career quiz, HR quiz, match flows |
-| `lib/feature/menu_Services/jop_and_news` | Jobs and news features |
+| `lib/core` | Shared configuration, API services, storage, constants, utilities |
+| `lib/feature/app_start` | Splash, onboarding, and welcome flows |
+| `lib/feature/auth` | Registration, login, OTP, auth widgets and cubits |
+| `lib/feature/home_and_explore` | Dashboard fetching, dynamic widgets, chart rendering |
+| `lib/feature/menu_Services/career_and_hr` | Career quiz, HR quiz, navigation, match/result flows |
+| `lib/feature/menu_Services/jop_and_news` | Jobs/news cubits, models, views, and widgets |
 
-The repository still contains older folders such as `lib/views`, `lib/widget`, `lib/services`, and `lib/cuibt`, so the codebase currently mixes newer modular structure with legacy modules.
+The current app still references some legacy folders in active startup code, especially for profile/logout screens, which is important when understanding the codebase and maintaining routes.
 
-### API and Data Flow
+### Data Flow
 
-#### Standard application flow
+#### Standard request flow
 
 ```mermaid
 sequenceDiagram
@@ -409,13 +429,13 @@ sequenceDiagram
 
     User->>Flutter: Trigger UI action
     Flutter->>API: HTTP request with optional JWT
-    API->>DB: Query or update data
-    DB-->>API: Entity/data result
+    API->>DB: Query or update domain data
+    DB-->>API: Result
     API-->>Flutter: JSON response
-    Flutter-->>User: Updated screen state
+    Flutter-->>User: Updated UI state
 ```
 
-#### Analytics proxy flow
+#### Analytics dashboard flow
 
 ```mermaid
 sequenceDiagram
@@ -423,144 +443,155 @@ sequenceDiagram
     participant Flutter
     participant API as ASP.NET Core API
     participant DB as SQL Server
-    participant Analytics as FastAPI Analytics API
+    participant Analytics as FastAPI Analytics
 
-    User->>Flutter: Open home or explore dashboard
-    Flutter->>API: GET/POST analytics request
-    API->>DB: Resolve user profile and track context
+    User->>Flutter: Open home/explore screen
+    Flutter->>API: Request dashboard data
+    API->>DB: Resolve user and track context
     API->>Analytics: POST /api/home or /api/explore
     Analytics-->>API: Dashboard payload
-    API-->>Flutter: JSON analytics response
-    Flutter-->>User: Charts, cards, and filters
+    API-->>Flutter: JSON payload
+    Flutter-->>User: Charts, cards, and filtered views
 ```
 
-#### Analytics refresh flow
+#### Data refresh flow
 
 ```mermaid
 flowchart LR
-    X[External data sources] --> R[Requesting.py]
-    R --> C[Cleaning.py]
-    C --> H[Handling.py]
-    H --> S[Shared Data/search_data.json]
-    S --> A[FastAPI Analytics API]
+    EXT[External market data] --> REQ[Requesting.py]
+    REQ --> CLEAN[Cleaning.py]
+    CLEAN --> HANDLE[Handling.py]
+    HANDLE --> SHARED[Shared Data/search_data.json]
+    SHARED --> FASTAPI[Analytics API]
 ```
 
-### Database Structure
+### Database Design
 
 Primary persistence is implemented through [AppDbContext.cs](</D:/Graduation Projects/Comp Project/InsightHub/src/Backend Department/InsightHub.Infrastructure/Persistence/AppDbContext.cs>).
 
-Key persisted concepts:
+Key persisted entities:
 
-- users and identity data
+- application users and identity records
 - tracks and category labels
 - survey questions, options, and responses
-- career quiz results and per-track scores
-- interview questions and answer options
+- career quiz results and per-track result rows
+- interview questions and options
 - job offers
 - news articles
 
-Important operational details:
+Important constraints and behaviors:
 
-- `SurveyResponse` has a uniqueness constraint on `(UserId, QuestionId)`.
+- `SurveyResponse` is unique per `(UserId, QuestionId)`.
 - `JobOffer.ExternalId` is unique.
-- `QuizResult` to `QuizResultTrack` is configured with cascade delete.
-- Startup seeding initializes baseline data and synthetic market users.
+- `QuizResult` cascades to related `QuizResultTrack` rows.
+- startup seeding initializes baseline reference data and dummy market data
 
 ### Scheduled Services
 
 The backend schedules recurring jobs through Hangfire:
 
-- job sync: daily at 1:00
+- job synchronization: daily at 1:00
 - news ingestion: every 12 hours
-- interview question sync: weekly on Saturday
+- interview question synchronization: weekly on Saturday
 
-These jobs complement the request/response API by keeping locally stored content fresh.
+The analytics Python refresh service separately runs on its own time-window loop and updates the shared dataset consumed by the FastAPI analytics service.
 
 ## Implementation Overview
 
 ### Implementation Approach
 
-InsightHub is implemented as three cooperating runtimes with separate responsibilities:
+InsightHub is implemented as three cooperating runtimes with clear boundaries:
 
-- Flutter handles user interaction, navigation, local token persistence, and dashboard rendering.
-- ASP.NET Core owns authentication, business logic, persistence, scheduled jobs, and API composition.
-- FastAPI focuses on analytics computation and dashboard payload generation over prepared market data.
+- Flutter handles navigation, authentication state, secure token storage, and UI rendering.
+- ASP.NET Core owns business workflows, persistence, authentication, background jobs, and API composition.
+- FastAPI handles analytics computation and dashboard payload construction over a prepared market dataset.
 
-This separation keeps the transactional system and the analytics workload decoupled.
+This separation keeps transactional application logic and analytics processing decoupled.
+
+### Notable Changes Since the Previous Analysis
+
+The current repository state shows these concrete changes and clarifications:
+
+- a tracked backend baseline config file now exists at `InsightHub.API/appsettings.json`
+- backend configuration now clearly includes `VerifierEmail` and `QuizAPI` sections in addition to JWT, database, Adzuna, NewsAPI, and analytics settings
+- the Flutter client still uses the newer `core/` and `feature/` structure, but active startup code also depends on some legacy folders
+- no Docker support has been added in the current state
+- no major top-level section removals were observed; the main change is refinement/expansion inside existing backend and Flutter modules
 
 ### Core Engineering Decisions
 
-| Decision | Why it matters |
+| Decision | Reason |
 | --- | --- |
-| Layered backend design | Keeps HTTP, contracts, domain rules, and infrastructure separated |
-| Dedicated analytics service | Avoids embedding Pandas-heavy processing in the main API |
-| Backend analytics proxy | Allows user-aware filtering before dashboard requests reach analytics |
-| Feature-based Flutter structure | Scales UI code by domain instead of by file type alone |
-| JWT + secure local storage | Supports authenticated mobile/web flows with centralized token handling |
-| Hangfire recurring jobs | Provides operational scheduling without a custom scheduler |
-| Seeded development data | Makes local demos and testing more realistic on first run |
+| Layered backend architecture | Separates HTTP, contracts, domain logic, and infrastructure concerns |
+| Dedicated analytics service | Keeps heavy data shaping out of the main transactional API |
+| Backend analytics proxy | Allows user-context filtering before analytics responses are returned |
+| Feature-oriented Flutter structure | Scales frontend code around workflows instead of file types alone |
+| Centralized API client and secure storage | Simplifies auth-aware requests and token handling |
+| Hangfire background scheduling | Supports data refresh without building a custom scheduler |
+| Seeded local data | Makes development and demos usable without manual population |
 
 ### Processing Pipelines
 
 #### Authentication and profile pipeline
 
-1. Flutter sends credentials or profile changes through `ApiService`.
+1. Flutter sends auth/profile requests via `ApiService`.
 2. `AccountController` delegates to `AccountService`.
-3. Identity/JWT logic runs in the backend.
-4. Tokens are stored client-side using secure storage.
-5. Unauthorized responses are centrally handled by the frontend service layer.
+3. Identity and JWT logic execute in the backend.
+4. Tokens are stored using secure storage in the client.
+5. Unauthorized responses trigger centralized client-side sign-out routing.
 
 #### Assessment pipeline
 
-1. The app checks employment status through `UserSubmission`.
-2. Based on the response, the user is routed to survey, career quiz, result, or thank-you flows.
-3. Answers are submitted to `SurveyController`, `CareerQuizController`, or `InterviewQuizController`.
-4. Results are stored and later reloaded through backend services.
+1. The app requests employment status from `UserSubmission`.
+2. The result determines whether the user enters employee survey, non-employee quiz, stored result, or thank-you flow.
+3. Answers are submitted to the appropriate backend controller.
+4. Results are persisted and later reused for navigation or display.
 
-#### Dashboard pipeline
+#### Analytics pipeline
 
-1. The analytics service loads `search_data.json` into a Pandas DataFrame at startup.
-2. `Analyzer` computes the required metrics.
-3. `PageBuilder` assembles widget payloads based on config-defined resolvers.
-4. The backend proxies dashboard requests and adds user-aware filters when needed.
-5. Flutter renders dynamic dashboard cards and charts using Syncfusion components.
+1. The Python refresh process collects and transforms market data.
+2. Cleaned output is written to `Shared Data/search_data.json`.
+3. FastAPI loads that file into a Pandas DataFrame on startup.
+4. `Analyzer` computes KPIs, aggregates, and chart-friendly payloads.
+5. `PageBuilder` composes dashboard sections.
+6. The backend proxies analytics responses to authenticated clients.
 
-### Patterns and Structural Characteristics
+### Patterns and Structure
 
-Patterns visible in the current codebase:
+Patterns visible in the codebase:
 
 - dependency injection in ASP.NET Core
-- interface-based service abstraction in the application layer
-- builder/configuration-driven response composition in analytics
+- interface-driven service abstraction
+- EF Core repository-through-DbContext style persistence
+- builder/configuration-driven analytics responses
 - Cubit/BLoC state management in Flutter
-- centralized HTTP client handling in the Flutter client
+- centralized HTTP client handling on the client side
 
 ### Scalability and Optimization Considerations
 
 Current strengths:
 
-- analytics workload is isolated from the transactional backend
-- recurring ingestion is offloaded to Hangfire jobs
-- external API access is wrapped behind service classes
-- dashboard rendering is driven by API payloads rather than hardcoded screen logic
-- client requests share a centralized `Dio`-based service layer
+- analytics processing is isolated from the transactional backend
+- external API integrations are encapsulated behind service classes
+- recurring jobs reduce manual refresh work
+- dashboard rendering is data-driven rather than fully hardcoded
+- client auth/network behavior is centralized
 
-Current constraints visible in the repository:
+Current constraints:
 
-- the Flutter codebase still contains legacy and refactored modules side by side
-- the backend requires manual local config bootstrapping
-- analytics startup depends on an in-memory DataFrame loaded from shared JSON
-- external data freshness depends on scheduled jobs or the long-running Python refresh process
-- some legacy frontend files still reference older service code paths
+- the Flutter app still mixes legacy and refactored modules
+- the tracked backend `appsettings.json` is environment-specific and should not be treated as portable production-safe config
+- analytics startup depends on loading a local shared JSON file into memory
+- external integrations rely on multiple third-party credentials and service availability
 
-### Technical Challenges Inferred from the Codebase
+### Technical Challenges Inferred from the Code
 
-The implementation suggests the team had to solve practical integration problems rather than only UI concerns:
+The current implementation suggests the main engineering challenges were:
 
-- coordinating three runtimes with different stacks
-- keeping dashboard analytics aligned with backend DTOs and frontend rendering
-- routing users into different assessment flows based on employment status
-- combining stored application data with externally ingested jobs and news
-- balancing a refactor of the Flutter app while retaining some legacy code during transition
+- coordinating three runtimes across different languages and toolchains
+- aligning backend DTOs, analytics payloads, and frontend rendering contracts
+- routing users dynamically based on employment and assessment state
+- keeping locally stored jobs/news/questions synchronized from external APIs
+- evolving the Flutter codebase while maintaining backward compatibility with older modules
 
-Overall, the updated repository reflects a realistic graduation-project architecture: modular, service-oriented, and strong enough to support both interactive product flows and background data-refresh processes.
+Overall, the current repository reflects a realistic multi-service graduation project with a stronger configuration surface than before, a dedicated analytics subsystem, and a frontend that is actively transitioning toward a more maintainable feature-based architecture.
