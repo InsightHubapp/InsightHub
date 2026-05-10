@@ -1,0 +1,86 @@
+# =========================
+# Global
+# =========================
+*.env
+*.log
+*.pyc
+*.pyo
+*.swp
+*.class
+.DS_Store
+.vscode/
+.idea/
+
+# Python environments / caches
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+
+# =========================
+# Analytics Department
+# =========================
+src/Analytics Department/Cleaning & Modeling/Raw Data/
+src/Analytics Department/Cleaning & Modeling/Lexicon References/
+src/Analytics Department/Cleaning & Modeling/Settings/
+src/Analytics Department/Analytics & Visualization/__pycache__/
+src/Analytics Department/Cleaning & Modeling/__pycache__/
+src/Analytics Department/Shared Data/
+
+# Optional legacy path if used outside src/
+Shared Data/
+
+# =========================
+# Backend Department (.NET)
+# =========================
+src/Backend Department/.vs/
+src/Backend Department/bin/
+src/Backend Department/obj/
+src/Backend Department/artifacts/
+src/Backend Department/out/
+src/Backend Department/.codex_build_out/
+src/Backend Department/.dotnet/
+src/Backend Department/.dotnet_cli/
+src/Backend Department/node_modules/
+src/Backend Department/*.user
+src/Backend Department/*.userosscache
+src/Backend Department/*.sln.docstates
+src/Backend Department/project.lock.json
+src/Backend Department/project.fragment.lock.json
+src/Backend Department/.env
+src/Backend Department/.env.development
+src/Backend Department/.env.local
+src/Backend Department/appsettings.Development.json
+
+# =========================
+# Flutter Department
+# =========================
+src/Flutter Department/.atom/
+src/Flutter Department/.build/
+src/Flutter Department/.buildlog/
+src/Flutter Department/.history
+src/Flutter Department/.svn/
+src/Flutter Department/.swiftpm/
+src/Flutter Department/migrate_working_dir/
+src/Flutter Department/android/app/debug/
+src/Flutter Department/android/app/profile/
+src/Flutter Department/android/app/release/
+
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+
+# Flutter / Dart / Pub
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+coverage/
+
+# Symbolication / obfuscation
+app.*.symbols
+app.*.map.json
