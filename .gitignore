@@ -50,7 +50,7 @@ src/Backend Department/project.fragment.lock.json
 src/Backend Department/.env
 src/Backend Department/.env.development
 src/Backend Department/.env.local
-src/Backend Department/InsightHub.API/appsettings.json
+src/Backend Department/InsightHub.API/appsettings.Development.json
 src/Backend Department/appsettings.Development.json
 
 # =========================

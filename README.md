@@ -69,17 +69,15 @@ dotnet restore "src/Backend Department/InsightHub.sln"
 
 #### Backend configuration
 
-The backend now includes a tracked baseline config file:
+Backend configuration is loaded from:
 
 - `src/Backend Department/InsightHub.API/appsettings.json`
-
-This file is in the correct runtime location for ASP.NET Core, but it currently contains environment-specific values and secrets. Another developer should not rely on those values as-is.
-
-Create a local override file for your machine:
-
 - `src/Backend Department/InsightHub.API/appsettings.Development.json`
 
-Recommended local template:
+Use `appsettings.json` for base/shared defaults and `appsettings.Development.json` for local development overrides.
+Both files are in the correct runtime location for ASP.NET Core.
+
+Recommended local values:
 
 ```json
 {
@@ -110,6 +108,11 @@ Recommended local template:
   }
 }
 ```
+
+Practical usage:
+
+- Keep shared defaults in `appsettings.json`.
+- Put environment-specific local values in `appsettings.Development.json` while running in Development mode.
 
 Configuration sections used by the backend:
 
@@ -226,7 +229,6 @@ python update.py
 Operational notes:
 
 - The analytics API reads `src/Analytics Department/Shared Data/search_data.json` at startup.
-- That file exists in the current repository state.
 - If the file becomes stale or missing, the analytics API still starts but dashboard responses may be empty or outdated.
 
 ### 4. Flutter Client Setup
@@ -294,7 +296,7 @@ This order matters because:
 
 ### 6. Docker
 
-No `Dockerfile` or `docker-compose` files are present in the current repository state.
+No `Dockerfile` or `docker-compose` setup is currently documented for this project.
 
 ### 7. Troubleshooting
 
@@ -508,16 +510,6 @@ InsightHub is implemented as three cooperating runtimes with clear boundaries:
 
 This separation keeps transactional application logic and analytics processing decoupled.
 
-### Notable Changes Since the Previous Analysis
-
-The current repository state shows these concrete changes and clarifications:
-
-- a tracked backend baseline config file now exists at `InsightHub.API/appsettings.json`
-- backend configuration now clearly includes `VerifierEmail` and `QuizAPI` sections in addition to JWT, database, Adzuna, NewsAPI, and analytics settings
-- the Flutter client still uses the newer `core/` and `feature/` structure, but active startup code also depends on some legacy folders
-- no Docker support has been added in the current state
-- no major top-level section removals were observed; the main change is refinement/expansion inside existing backend and Flutter modules
-
 ### Core Engineering Decisions
 
 | Decision | Reason |
@@ -580,7 +572,7 @@ Current strengths:
 Current constraints:
 
 - the Flutter app still mixes legacy and refactored modules
-- the tracked backend `appsettings.json` is environment-specific and should not be treated as portable production-safe config
+- configuration relies on local values for connection strings, JWT, and external API credentials
 - analytics startup depends on loading a local shared JSON file into memory
 - external integrations rely on multiple third-party credentials and service availability
 
