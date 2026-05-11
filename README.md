@@ -189,10 +189,8 @@ Use [env example.txt](https://github.com/InsightHubapp/InsightHub/blob/main/src/
 Recommended local template:
 
 ```dotenv
-ADZUNA_API_ID=[your-adzuna-app-id]
-ADZUNA_API_KEY=[your-adzuna-api-key]
-# legacy key name still accepted:
-# ADZUNA_APP_KEY=[your-adzuna-api-key]
+ADZUNA_API_ID=your_adzuna_app_id
+ADZUNA_APP_KEY=your_adzuna_api_key
 
 ANALYST_HOST=127.0.0.1
 CHARTS_PORT=8000
@@ -410,11 +408,11 @@ The analytics service is built around a reusable `Analyzer` and dynamic dashboar
 | `Routes.py` | Dynamic page route generation |
 | `Services.py` | `PageBuilder` response assembly |
 | `main.py` | FastAPI bootstrap and router registration |
-| `Cleaning & Modeling/Requesting.py` | Data acquisition client layer |
-| `Cleaning & Modeling/Handling.py` | Local file/data handling |
-| `Cleaning & Modeling/Caching.py` | Cache management |
-| `Cleaning & Modeling/Cleaning.py` | Transformation and cleaning logic |
-| `Cleaning & Modeling/update.py` | Long-running scheduled refresh process |
+| `Requesting.py` | Data acquisition client layer |
+| `Handling.py` | Local file/data handling |
+| `Caching.py` | Cache management |
+| `Cleaning.py` | Transformation and cleaning logic |
+| `update.py` | Long-running scheduled refresh process |
 
 #### Flutter Client
 
