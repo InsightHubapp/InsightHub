@@ -15,7 +15,7 @@ Core capabilities include:
 
 ## User Guide
 
-This section describes how to run the current repository locally after cloning it.
+This section describes how to run the project locally after cloning it.
 
 ### Repository Structure
 
@@ -34,7 +34,7 @@ This section describes how to run the current repository locally after cloning i
 | SQL Server | 2019+ / Express / LocalDB | Primary database and Hangfire storage |
 | Python | 3.10+ | Analytics API and refresh scripts |
 | Flutter SDK | Stable release compatible with Dart `^3.9.2` | Client build/runtime |
-| ODBC Driver 17 for SQL Server | Current Windows version | Needed by the analytics pipeline when using SQL Server |
+| ODBC Driver 17 for SQL Server | Supported version | Needed by the analytics pipeline when using SQL Server |
 
 ### Technologies in Use
 
@@ -48,7 +48,7 @@ This section describes how to run the current repository locally after cloning i
 ### 1. Clone the Repository
 
 ```powershell
-git clone <repository-url>
+git clone https://github.com/InsightHubapp/InsightHub.git
 cd InsightHub
 ```
 
@@ -146,7 +146,7 @@ dotnet tool install --global dotnet-ef
 dotnet run --project "src/Backend Department/InsightHub.API"
 ```
 
-Current development URL from [launchSettings.json](</D:/Graduation Projects/Comp Project/InsightHub/src/Backend Department/InsightHub.API/Properties/launchSettings.json>):
+Development URL from [launchSettings.json](https://github.com/InsightHubapp/InsightHub/blob/main/src/Backend%20Department/InsightHub.API/Properties/launchSettings.json):
 
 - `http://localhost:5043`
 
@@ -163,6 +163,7 @@ The analytics section contains:
 
 - `Analytics & Visualization`: FastAPI dashboard API
 - `Cleaning & Modeling`: data acquisition, cleaning, caching, and refresh pipeline
+- `Cleaning & Modeling/Lexicon References`: domain classification and normalization references used by the cleaning pipeline
 
 #### Create and activate a virtual environment
 
@@ -183,13 +184,15 @@ Create or update:
 
 - `src/Analytics Department/.env`
 
-Use [env example.txt](</D:/Graduation Projects/Comp Project/InsightHub/src/Analytics Department/env example.txt>) as the reference.
+Use [env example.txt](https://github.com/InsightHubapp/InsightHub/blob/main/src/Analytics%20Department/env%20example.txt) as the reference.
 
 Recommended local template:
 
 ```dotenv
-ADZUNA_API_ID=
-ADZUNA_APP_KEY=
+ADZUNA_API_ID=[your-adzuna-app-id]
+ADZUNA_API_KEY=[your-adzuna-api-key]
+# legacy key name still accepted:
+# ADZUNA_APP_KEY=[your-adzuna-api-key]
 
 ANALYST_HOST=127.0.0.1
 CHARTS_PORT=8000
@@ -203,7 +206,27 @@ DB_PORT=1433
 DB_NAME=InsightHub
 ```
 
+#### Run analytics data pipeline first
+
+Generate or refresh analytics data before starting the FastAPI service.
+
+```powershell
+cd "src/Analytics Department/Cleaning & Modeling"
+python update.py
+```
+
+This step fetches data (using Adzuna credentials), updates raw/cache files, and generates:
+
+- `src/Analytics Department/Shared Data/search_data.json`
+
+Pipeline dependencies:
+
+- Adzuna credentials from `.env`
+- Lexicon reference files in `Cleaning & Modeling/Lexicon References` (for job-domain categorization and text normalization)
+
 #### Run the analytics API
+
+After pipeline completion, start FastAPI:
 
 ```powershell
 cd "src/Analytics Department/Analytics & Visualization"
@@ -215,21 +238,11 @@ The analytics service exposes:
 - `POST /api/home`
 - `POST /api/explore`
 
-#### Optional: run the analytics refresh service
-
-[update.py](</D:/Graduation Projects/Comp Project/InsightHub/src/Analytics Department/Cleaning & Modeling/update.py>) is a long-running scheduled process, not a one-shot script. It manages its own run-state file and refreshes data on a timed loop.
-
-Run it in a separate terminal only if you want the local environment to keep refreshing analytics data:
-
-```powershell
-cd "src/Analytics Department/Cleaning & Modeling"
-python update.py
-```
-
 Operational notes:
 
 - The analytics API reads `src/Analytics Department/Shared Data/search_data.json` at startup.
-- If the file becomes stale or missing, the analytics API still starts but dashboard responses may be empty or outdated.
+- If this file is not updated, dashboard responses may be empty or outdated.
+- The data preparation pipeline uses Lexicon reference mappings during title normalization and field classification.
 
 ### 4. Flutter Client Setup
 
@@ -238,7 +251,7 @@ The Flutter app is now mostly organized around:
 - `lib/core`
 - `lib/feature`
 
-Legacy folders such as `lib/views`, `lib/widget`, `lib/services`, `lib/model`, and `lib/cuibt` still coexist with the newer structure, so the app is currently in a transitional state rather than a full clean-slate refactor.
+Legacy folders such as `lib/views`, `lib/widget`, `lib/services`, `lib/model`, and `lib/cuibt` still coexist with the newer structure, so the app remains in a transitional architecture.
 
 #### Install dependencies
 
@@ -249,7 +262,7 @@ flutter pub get
 
 #### Configure the frontend API base URL
 
-The current app loads its base URL from:
+The app loads its base URL from:
 
 - `src/Flutter Department/.env`
 
@@ -296,7 +309,7 @@ This order matters because:
 
 ### 6. Docker
 
-No `Dockerfile` or `docker-compose` setup is currently documented for this project.
+No `Dockerfile` or `docker-compose` setup is documented for this project.
 
 ### 7. Troubleshooting
 
@@ -405,7 +418,7 @@ The analytics service is built around a reusable `Analyzer` and dynamic dashboar
 
 #### Flutter Client
 
-Current frontend structure:
+Frontend structure:
 
 | Area | Responsibility |
 | --- | --- |
@@ -416,7 +429,7 @@ Current frontend structure:
 | `lib/feature/menu_Services/career_and_hr` | Career quiz, HR quiz, navigation, match/result flows |
 | `lib/feature/menu_Services/jop_and_news` | Jobs/news cubits, models, views, and widgets |
 
-The current app still references some legacy folders in active startup code, especially for profile/logout screens, which is important when understanding the codebase and maintaining routes.
+The app still references some legacy folders in active startup code, especially for profile/logout screens, which is important for maintenance and route tracing.
 
 ### Data Flow
 
@@ -561,7 +574,7 @@ Patterns visible in the codebase:
 
 ### Scalability and Optimization Considerations
 
-Current strengths:
+Strengths:
 
 - analytics processing is isolated from the transactional backend
 - external API integrations are encapsulated behind service classes
@@ -569,7 +582,7 @@ Current strengths:
 - dashboard rendering is data-driven rather than fully hardcoded
 - client auth/network behavior is centralized
 
-Current constraints:
+Constraints:
 
 - the Flutter app still mixes legacy and refactored modules
 - configuration relies on local values for connection strings, JWT, and external API credentials
@@ -578,7 +591,7 @@ Current constraints:
 
 ### Technical Challenges Inferred from the Code
 
-The current implementation suggests the main engineering challenges were:
+The implementation suggests the main engineering challenges were:
 
 - coordinating three runtimes across different languages and toolchains
 - aligning backend DTOs, analytics payloads, and frontend rendering contracts
@@ -586,4 +599,4 @@ The current implementation suggests the main engineering challenges were:
 - keeping locally stored jobs/news/questions synchronized from external APIs
 - evolving the Flutter codebase while maintaining backward compatibility with older modules
 
-Overall, the current repository reflects a realistic multi-service graduation project with a stronger configuration surface than before, a dedicated analytics subsystem, and a frontend that is actively transitioning toward a more maintainable feature-based architecture.
+Overall, the repository reflects a realistic multi-service graduation project with a dedicated analytics subsystem and a frontend evolving toward a more maintainable feature-based architecture.

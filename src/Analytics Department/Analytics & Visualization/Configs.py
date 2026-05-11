@@ -134,7 +134,7 @@ def get_home_page_config(analyzer):
                 round_value = 0,
                 top_n = 4,
                 show_others = False,
-                filters = {**(req.filters or {}), "seniority_level": {"!=": ["Not Specified", "Trainee"]}}, # Due to Trainee Data Noise
+                filters = {**(req.filters or {}), "seniority_level": {"!=": "Not Specified"}},
                 rules = req.rules,
                 orient = req.orient if req.orient else 'records',
                 title = "The Salary Tea ☕",
@@ -427,7 +427,7 @@ def get_explore_page_config(analyzer):
                 round_value = 0,
                 top_n = 4,
                 show_others = False,
-                filters = {**(req.filters or {}), "seniority_level": {"!=": ["Not Specified", "Trainee"]}}, # Due to Trainee Data Noise
+                filters = {**(req.filters or {}), "seniority_level": {"!=": "Not Specified"}},
                 rules = req.rules,
                 orient = req.orient if req.orient else 'records',
                 title = "The Salary Tea ☕",

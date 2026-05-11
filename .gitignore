@@ -21,7 +21,6 @@ __pycache__/
 # Analytics Department
 # =========================
 src/Analytics Department/Cleaning & Modeling/Raw Data/
-src/Analytics Department/Cleaning & Modeling/Lexicon References/
 src/Analytics Department/Cleaning & Modeling/Settings/
 src/Analytics Department/Analytics & Visualization/__pycache__/
 src/Analytics Department/Cleaning & Modeling/__pycache__/
