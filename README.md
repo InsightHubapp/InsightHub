@@ -293,10 +293,10 @@ flutter run
 Start the system in this order:
 
 1. SQL Server
-2. Analytics API
-3. ASP.NET Core backend
-4. Flutter client
-5. Optional analytics refresh process
+2. Analytics refresh process
+3. Analytics API
+4. ASP.NET Core backend
+5. Flutter client
 
 This order matters because:
 
@@ -305,11 +305,7 @@ This order matters because:
 - the Flutter app depends on the backend base URL
 - the refresh service feeds the analytics data source used by the FastAPI process
 
-### 6. Docker
-
-No `Dockerfile` or `docker-compose` setup is documented for this project.
-
-### 7. Troubleshooting
+### 6. Troubleshooting
 
 | Issue | Likely cause | Action |
 | --- | --- | --- |
