@@ -13,6 +13,7 @@ public class CareerQuizService : ICareerQuizService
     private static readonly int[] SharedQuestionIds = Enumerable.Range(111, 10).ToArray();
     private static readonly int[] MultiChoiceIds = { 113, 114, 115 };
 
+
     public CareerQuizService(AppDbContext db)
     {
         _db = db;
@@ -72,9 +73,11 @@ public class CareerQuizService : ICareerQuizService
                     RequiredSkills = t.RequiredSkills,
                     Score = t.Score,
                     MaxScore = t.MaxScore,
-                    Percentage = t.TrackSimilarityScore
+                    CombinedScore = t.CombinedScore,
+                    Percentage = t.Percentage
                 },
                 TrackSimilarityScore = t.TrackSimilarityScore,
+                CombinedScore = t.CombinedScore,
                 SimilarityMessage = t.SimilarityMessage,
                 MarketInsights = new CareerQuizStoredMarketInsightsViewModel
                 {
@@ -153,18 +156,32 @@ public class CareerQuizService : ICareerQuizService
             var similarity = await CalculateTrackAverageSimilarityAsync(graduateSharedVector, track.TrackId);
             var marketInsights = await GetMarketInsightsAsync(track.TrackId);
 
+            var combinedScore = CareerQuizDecisionEngine.ComputeCombinedScore(
+                track.Percentage,
+                similarity.Score
+            );
+
+            var message = CareerQuizDecisionEngine.GenerateSimilarityMessage(
+                combinedScore,
+                track.Percentage,
+                similarity.Score,
+                track.TrackName
+            );
+
             allTrackResults.Add(new TrackAverageMatchViewModel
             {
                 Track = track,
                 TrackSimilarityScore = similarity.Score,
-                SimilarityMessage = similarity.Message,
+                CombinedScore = combinedScore,
+                SimilarityMessage = message,
                 MarketInsights = marketInsights
             });
+        
         }
 
         var topTrackResults = allTrackResults
-            .OrderByDescending(t => t.TrackSimilarityScore)
-            .ThenByDescending(t => t.Track.Percentage)
+            .OrderByDescending(t => t.CombinedScore)
+            .ThenByDescending(t => t.TrackSimilarityScore)
             .Take(3)
             .ToList();
 
@@ -202,7 +219,8 @@ public class CareerQuizService : ICareerQuizService
                 RequiredSkills = t.Track.RequiredSkills ?? string.Empty,
                 Score = t.Track.Score,
                 MaxScore = t.Track.MaxScore,
-                Percentage = t.TrackSimilarityScore,
+                CombinedScore = t.CombinedScore,
+                Percentage = t.Track.Percentage,
                 TrackSimilarityScore = t.TrackSimilarityScore,
                 SimilarityMessage = t.SimilarityMessage ?? string.Empty,
                 TotalEmployeesInTrack = t.MarketInsights?.TotalEmployeesInTrack ?? 0,

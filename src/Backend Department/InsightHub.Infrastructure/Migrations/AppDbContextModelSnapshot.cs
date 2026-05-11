@@ -337,6 +337,9 @@ namespace InsightHub.Migrations
                     b.Property<double>("AvgYearsExperience")
                         .HasColumnType("float");
 
+                    b.Property<double>("CombinedScore")
+                        .HasColumnType("float");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -456,8 +459,8 @@ namespace InsightHub.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("BirthDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Collage")
                         .HasMaxLength(50)

@@ -1,30 +1,29 @@
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace InsightHub.Migrations
 {
     /// <inheritdoc />
-    public partial class AddHasCompletedAssessment : Migration
+    public partial class AddCombinedScoreToQuizResultTrack : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "HasCompletedAssessment",
-                table: "AspNetUsers",
-                type: "bit",
+            migrationBuilder.AddColumn<double>(
+                name: "CombinedScore",
+                table: "QuizResultTracks",
+                type: "float",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: 0.0);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "HasCompletedAssessment",
-                table: "AspNetUsers");
+                name: "CombinedScore",
+                table: "QuizResultTracks");
         }
     }
 }
-

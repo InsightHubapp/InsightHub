@@ -97,6 +97,14 @@ public static class CareerQuizDecisionEngine
         return Math.Round((weightedSum / totalWeight) * 100, 1);
     }
 
+    private const double AptitudeWeight = 0.4;
+    private const double SimilarityWeight = 0.6;
+
+    public static double ComputeCombinedScore(double aptitudePercentage, double similarityScore)
+    {
+        return Math.Round((aptitudePercentage * AptitudeWeight) + (similarityScore * SimilarityWeight), 1);
+    }
+
     public static string MapEnvironment(int value)
     {
         return value switch
@@ -116,6 +124,30 @@ public static class CareerQuizDecisionEngine
             2 => "Mid-size",
             3 => "Corporate",
             _ => "N/A"
+        };
+    }
+    public static string GenerateSimilarityMessage(double combinedScore, double aptitudePercentage, double similarityScore, string trackName)
+    {
+        var aptitudeLevel = aptitudePercentage switch
+        {
+            >= 80 => "strong natural aptitude",
+            >= 50 => "moderate aptitude",
+            _ => "low aptitude quiz score"
+        };
+
+        var similarityLevel = similarityScore switch
+        {
+            >= 75 => "highly aligned with",
+            >= 50 => "moderately aligned with",
+            _ => "somewhat different from"
+        };
+
+        return combinedScore switch
+        {
+            >= 80 => $"Excellent match. You have a {aptitudeLevel} for {trackName} and your preferences are {similarityLevel} professionals already working in this field.",
+            >= 65 => $"Good match. You show {aptitudeLevel} for {trackName} and your work preferences are {similarityLevel} those of employed professionals in this track.",
+            >= 50 => $"Moderate match. You have {aptitudeLevel} for {trackName}, but your preferences differ somewhat from professionals currently in this field.",
+            _ => $"Weak match. Your quiz results and preferences show limited alignment with {trackName} professionals. Consider exploring other recommended tracks."
         };
     }
 }

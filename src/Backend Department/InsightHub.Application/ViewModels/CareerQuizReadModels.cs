@@ -28,6 +28,7 @@ public class CareerQuizStoredTrackViewModel
     public CareerQuizStoredTrackInfoViewModel Track { get; set; } = new();
     public double TrackSimilarityScore { get; set; }
     public string SimilarityMessage { get; set; } = string.Empty;
+    public double CombinedScore { get; set; }
     public CareerQuizStoredMarketInsightsViewModel MarketInsights { get; set; } = new();
 }
 
@@ -40,6 +41,7 @@ public class CareerQuizStoredTrackInfoViewModel
     public int Score { get; set; }
     public int MaxScore { get; set; }
     public double Percentage { get; set; }
+    public double CombinedScore { get; set; }
 }
 
 public class CareerQuizStoredMarketInsightsViewModel
