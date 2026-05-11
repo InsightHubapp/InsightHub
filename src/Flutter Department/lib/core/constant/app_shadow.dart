@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AppShadows {
-  /// Light (Lists / small cards)
   static List<BoxShadow> level1 = [
     BoxShadow(
       color: Colors.black.withOpacity(0.03),
@@ -10,7 +9,6 @@ class AppShadows {
     ),
   ];
 
-  /// Medium (Default cards)
   static List<BoxShadow> level2 = [
     BoxShadow(
       color: Colors.black.withOpacity(0.05),
@@ -19,7 +17,6 @@ class AppShadows {
     ),
   ];
 
-  /// Strong (Dialogs / elevated panels)
   static List<BoxShadow> level3 = [
     BoxShadow(
       color: Colors.black.withOpacity(0.08),
@@ -28,7 +25,6 @@ class AppShadows {
     ),
   ];
 
-  /// Focus / Hover (web/desktop emphasis)
   static List<BoxShadow> focus = [
     BoxShadow(
       color: Colors.black.withOpacity(0.10),

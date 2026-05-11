@@ -25,6 +25,8 @@ class Routes {
 
   static const String matchScreen = '/matchScreen';
 
+  static const String careerResultScreen = '/careerResultScreen';
+
   static const String profileScreen = '/profileScreen';
 
   static const String editProfileScreen = '/editProfileScreen';

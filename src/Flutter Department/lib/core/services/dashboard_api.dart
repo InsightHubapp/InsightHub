@@ -8,8 +8,6 @@ class DashboardApi {
   DashboardApi({ApiService? apiService})
     : _apiService = apiService ?? ApiService();
 
-  /// Fetches JSON from API and handles all errors.
-  /// Always returns a safe List<Map<String, dynamic>>.
   Future<List<Map<String, dynamic>>> fetchDashboardData(
     String endpoint, {
     Map<String, dynamic> requestBody = const {},
@@ -35,7 +33,6 @@ class DashboardApi {
           .where((item) => item.isNotEmpty)
           .toList();
     } catch (e) {
-      debugPrint("Dashboard Crash: $e");
       return [];
     }
   }
@@ -59,12 +56,7 @@ class DashboardApi {
   void _logDashboardError(Map<String, dynamic> response) {
     final errorData = response['data'];
     if (errorData is Map<String, dynamic>) {
-      debugPrint(
-        "Dashboard Error: ${AppError.fromJson(errorData).getErrorMessage()}",
-      );
       return;
     }
-
-    debugPrint("Dashboard Error: ${response['error']}");
   }
 }

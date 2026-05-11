@@ -5,7 +5,7 @@ import 'package:InsightHub/feature/menu_Services/career_and_hr/widget/widgets/qu
 
 class QuestionCard extends StatelessWidget {
   final QuestionModel question;
-  final dynamic answer;
+  final int? answer;
   final ValueChanged<int> onChanged;
 
   const QuestionCard({
@@ -17,7 +17,7 @@ class QuestionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedValue = answer is int ? answer as int : null;
+    final selectedValue = answer;
 
     return QuizQuestionCard(
       questionText: question.text,

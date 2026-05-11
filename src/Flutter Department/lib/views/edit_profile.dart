@@ -33,7 +33,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   int? _lastSelectedExperience;
   bool _didPrefill = false;
   
-  // Employment transition tracking
   late bool _previouslyEmployed;
   bool _shouldPreserveExperience = false;
 
@@ -101,7 +100,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         .toString();
   }
 
-  /// Handle transition: Employee → Non-Employee
   Future<void> _handleEmployeeToNonEmployee() async {
     final shouldContinue = await showDialog<bool>(
       context: context,
@@ -129,20 +127,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (!mounted) return;
 
     if (shouldContinue == true) {
-      // User has real experience and is currently unemployed
       setState(() {
         isEmployed = false;
         _shouldPreserveExperience = true;
         _previouslyEmployed = false;
       });
     } else if (shouldContinue == false) {
-      // Show second confirmation dialog
       _handleEmployeeToNonEmployeeSecondDialog();
     }
-    // If null (dismissed), do nothing
   }
 
-  /// Handle second confirmation dialog: Employee → Non-Employee (accidentally selected)
   Future<void> _handleEmployeeToNonEmployeeSecondDialog() async {
     final wasAccidental = await showDialog<bool>(
       context: context,
@@ -170,7 +164,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (!mounted) return;
 
     if (wasAccidental == true) {
-      // User was never an employee, clear all experience data
       setState(() {
         isEmployed = false;
         _shouldPreserveExperience = false;
@@ -181,16 +174,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         _previouslyEmployed = false;
       });
     } else if (wasAccidental == false) {
-      // User cancelled the transition, restore original state
       setState(() {
         isEmployed = true;
         _previouslyEmployed = true;
       });
     }
-    // If null (dismissed), do nothing
   }
 
-  /// Handle transition: Non-Employee → Employee
   Future<void> _handleNonEmployeeToEmployee() async {
     final wasAccidental = await showDialog<bool>(
       context: context,
@@ -219,19 +209,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (!mounted) return;
 
     if (wasAccidental == true) {
-      // Show second confirmation dialog
       _handleNonEmployeeToEmployeeSecondDialog();
     } else if (wasAccidental == false) {
-      // User cancelled, restore non-employee state
       setState(() {
         isEmployed = false;
         _previouslyEmployed = false;
       });
     }
-    // If null (dismissed), do nothing
   }
 
-  /// Handle second confirmation dialog: Non-Employee → Employee (work experience check)
   Future<void> _handleNonEmployeeToEmployeeSecondDialog() async {
     final hasExperience = await showDialog<bool>(
       context: context,
@@ -259,15 +245,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (!mounted) return;
 
     if (hasExperience == true) {
-      // User has experience and wants to become employee
       setState(() {
         isEmployed = true;
         _shouldPreserveExperience = false;
         _previouslyEmployed = false;
-        // Don't clear job/experience selections, user will fill them
       });
     } else if (hasExperience == false) {
-      // User doesn't have experience, reject employment status change
       setState(() {
         isEmployed = false;
         _previouslyEmployed = false;
@@ -275,7 +258,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         selectedExperience = null;
       });
       
-      // Show informational snackbar
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -287,21 +269,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         );
       }
     }
-    // If null (dismissed), do nothing
   }
 
-  /// Handle employment status change with advanced transition logic
   Future<void> _handleEmploymentStatusChange(bool newValue) async {
-    if (newValue == isEmployed) return; // No change
+    if (newValue == isEmployed) return; 
 
     if (_previouslyEmployed && !newValue) {
-      // Transition: Employee → Non-Employee
       _handleEmployeeToNonEmployee();
     } else if (!_previouslyEmployed && newValue) {
-      // Transition: Non-Employee → Employee
       _handleNonEmployeeToEmployee();
     } else {
-      // Simple state change (shouldn't happen in normal flow)
       setState(() {
         isEmployed = newValue;
         if (!isEmployed) {
@@ -318,19 +295,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final formState = _formKey.currentState;
     if (formState == null || !formState.validate() || !isValid) return;
 
-    // Ensure state consistency before sending
-    // If user is not employed and not preserving experience, force clear the selection
     if (!(isEmployed || _shouldPreserveExperience)) {
       selectedExperience = 0;
       selectedJob = null;
     }
 
-    // Determine what data to send based on employment status and preservation flag
     final trackNameToSend = (isEmployed || _shouldPreserveExperience) 
         ? _selectedTrackName() 
         : '';
     
-    // Send experience value: either selected value if employed/preserving, or 0 if cleared
     final yearsExperienceToSend = (isEmployed || _shouldPreserveExperience) 
         ? selectedExperience 
         : 0;

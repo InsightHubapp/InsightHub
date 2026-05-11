@@ -7,7 +7,6 @@ import 'package:InsightHub/core/services/endpoints.dart';
 class JobsCubit extends Cubit<JobsState> {
   final ApiService _apiService = ApiService();
 
-  // Filters
   List<String> _selectedCategories = [];
   String _searchQuery = '';
   DateTime? _startDate;
@@ -31,14 +30,12 @@ class JobsCubit extends Cubit<JobsState> {
 
   JobsCubit() : super(JobsInitial());
 
-  // Getters
   List<String> get selectedCategories => _selectedCategories;
   String get searchQuery => _searchQuery;
   DateTime? get startDate => _startDate;
   DateTime? get endDate => _endDate;
   String get sortBy => _sortBy;
 
-  // ================= FILTERS =================
 
   void setCategories(List<String> categories) {
     _selectedCategories = categories;
@@ -78,7 +75,6 @@ class JobsCubit extends Cubit<JobsState> {
         _sortBy != 'latest';
   }
 
-  // ================= CORE =================
 
   Future<void> loadJobs({bool reset = false}) async {
     if (reset) {
@@ -102,21 +98,11 @@ class JobsCubit extends Cubit<JobsState> {
     final queryParams = _buildQueryParams(page);
     final body = _buildBody();
 
-    print('=== JOBS API REQUEST ===');
-    print('Endpoint: ${Endpoints.jobs}');
-    print('Query Params: $queryParams');
-    print('Body: $body');
-    print('========================');
-
     final response = await _apiService.post(
       Endpoints.jobs,
       queryParameters: queryParams,
       data: body,
     );
-
-    print('=== JOBS API RESPONSE ===');
-    print(response);
-    print('========================');
 
     if (response['success'] == true && response['data'] != null) {
       dynamic rawData = response['data'];
@@ -145,7 +131,6 @@ class JobsCubit extends Cubit<JobsState> {
         ];
       }
 
-      // Get pagination info from response
       int totalPages = 1;
       int totalCount = allJobs.length;
       if (rawData is Map<String, dynamic>) {
@@ -181,7 +166,6 @@ class JobsCubit extends Cubit<JobsState> {
     }
   }
 
-  // ================= HELPERS =================
 
   Map<String, dynamic> _buildQueryParams(int page) {
     return {

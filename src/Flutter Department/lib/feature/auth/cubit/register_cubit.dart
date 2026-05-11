@@ -25,55 +25,45 @@ class RegisterCubit extends Cubit<RegisterState> {
   int? trackId;
   int? yearsExperience;
 
-  /// Save Email
   void saveEmail(String value) {
     email = value;
   }
 
-  /// Save Password
   void savePassword(String value) {
     password = value;
     confirmPassword = value;
   }
 
-  /// Save Name
   void saveName(String first, String last) {
     firstName = first;
     lastName = last;
   }
 
-  /// Save Gender
   void saveGender(int value) {
     gender = value;
   }
 
-  /// Save Birth Date
   void saveBirthDate(DateTime value) {
     birthDate = value;
   }
 
-  /// Save Collage
   void saveCollage(String value) {
     collage = value;
   }
 
-  /// Save Employment Status
   void saveEmployment(bool value) {
     isEmployed = value;
   }
 
-  /// Save Labor Info
   void saveLaborInfo(int track, int exp) {
     trackId = track;
     yearsExperience = exp;
   }
 
-  /// Reset only temporary UI states
   void resetState() {
     emit(RegisterInitial());
   }
 
-  /// Submit Register
   Future<void> submitRegister() async {
     emit(RegisterLoading());
 
@@ -114,7 +104,6 @@ class RegisterCubit extends Cubit<RegisterState> {
     }
   }
 
-  /// Check if email already exists
   Future<void> checkEmailExistence(
     String emailAddress,
   ) async {
@@ -142,7 +131,6 @@ class RegisterCubit extends Cubit<RegisterState> {
     }
   }
 
-  /// Send OTP
   Future<void> sendOtp(
     String emailAddress,
   ) async {
@@ -177,7 +165,6 @@ class RegisterCubit extends Cubit<RegisterState> {
     }
   }
 
-  /// Verify OTP
   Future<void> verifyOtp(
     String emailAddress,
     String otpCode,
@@ -212,7 +199,6 @@ class RegisterCubit extends Cubit<RegisterState> {
     }
   }
 
-  /// Build Register Model
   RegisterModel buildModel() {
     return RegisterModel(
       firstName: firstName!,
@@ -229,7 +215,6 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
   }
 
-  /// Full Reset
   void reset() {
     firstName = null;
     lastName = null;

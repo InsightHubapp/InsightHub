@@ -21,14 +21,14 @@ import 'package:InsightHub/feature/home_and_explore/view/home_screen.dart';
 import 'package:InsightHub/views/edit_profile.dart';
 import 'package:InsightHub/views/profile.dart';
 import 'package:InsightHub/feature/menu_Services/career_and_hr/views/question_screen.dart';
-import 'package:InsightHub/feature/menu_Services/career_and_hr/views/match_screen.dart';
+import 'package:InsightHub/feature/menu_Services/career_and_hr/views/career_result_screen.dart';
 import 'package:InsightHub/feature/menu_Services/survey_menu_screen.dart';
 import 'package:InsightHub/feature/menu_Services/career_and_hr/views/survey_thank_you_screen.dart';
 import 'package:InsightHub/feature/menu_Services/jop_and_news/views/news_screen.dart';
 import 'package:InsightHub/feature/menu_Services/jop_and_news/views/jobs_screen.dart';
 import 'package:InsightHub/core/constant/routes.dart';
 import 'package:InsightHub/feature/auth/cubit/login_cubit.dart';
-import 'package:InsightHub/feature/menu_Services/career_and_hr/cubit/match_cubit.dart';
+import 'package:InsightHub/feature/menu_Services/career_and_hr/cubit/career_result_cubit.dart';
 import 'package:InsightHub/feature/menu_Services/career_and_hr/cubit/question_cubit.dart';
 import 'package:InsightHub/feature/auth/cubit/register_cubit.dart';
 import 'package:InsightHub/feature/home_and_explore/cubit/dashboard_cubit.dart';
@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (context) => LoginCubit()),
         BlocProvider(create: (context) => LogoutCubit()),
         BlocProvider(create: (context) => ProfileCubit()),
-        BlocProvider(create: (context) => MatchCubit()),
+        BlocProvider(create: (context) => CareerResultCubit()),
         BlocProvider(create: (context) => QuestionCubit()),
         BlocProvider(create: (context) => HrQuestionCubit()),
         BlocProvider(create: (context) => DashboardCubit()),
@@ -110,7 +110,9 @@ class _MyAppState extends State<MyApp> {
           Routes.laborInformationScreen: (_) => const LaborInformationScreen(),
           Routes.confirmationScreen: (_) => ConfirmationScreen(),
           Routes.questionScreen: (_) => const QuestionScreen(),
-          Routes.matchScreen: (_) => const MatchScreen(),
+          // Backwards compatible route → career result.
+          Routes.matchScreen: (_) => const CareerResultScreen(),
+          Routes.careerResultScreen: (_) => const CareerResultScreen(),
           Routes.profileScreen: (_) => const ProfileScreen(),
           Routes.editProfileScreen: (_) => const EditProfileScreen(),
           Routes.surveyMenuScreen: (_) => const SurveyMenuScreen(),

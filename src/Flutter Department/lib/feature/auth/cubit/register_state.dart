@@ -14,7 +14,6 @@ final class RegisterFailure extends RegisterState {
   RegisterFailure(this.errorMessage);
 }
 
-// OTP States
 final class OtpSending extends RegisterState {}
 final class OtpSent extends RegisterState {}
 final class OtpSendFailure extends RegisterState {
@@ -28,7 +27,6 @@ final class OtpVerifyFailure extends RegisterState {
   OtpVerifyFailure(this.errorMessage);
 }
 
-// Email Existence Check States
 final class CheckingEmailExistence extends RegisterState {}
 final class EmailExists extends RegisterState {
   final String email;

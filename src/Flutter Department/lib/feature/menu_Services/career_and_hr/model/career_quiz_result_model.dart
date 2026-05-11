@@ -10,14 +10,11 @@ class CareerQuizResultModel {
 
   factory CareerQuizResultModel.fromJson(Map<String, dynamic> json) {
     final tracksRaw = (json['topTracks'] as List<dynamic>? ?? const []);
-    print("CareerQuizResultModel: Parsing ${tracksRaw.length} tracks from JSON");
     
     final parsedTracks = tracksRaw
         .whereType<Map>()
         .map((item) => TrackMatch.fromJson(Map<String, dynamic>.from(item)))
         .toList();
-        
-    print("CareerQuizResultModel: Successfully parsed ${parsedTracks.length} tracks");
 
     return CareerQuizResultModel(
       topTracks: parsedTracks,
@@ -39,6 +36,7 @@ class CareerQuizResultModel {
             percentage: 95,
           ),
           trackSimilarityScore: 90,
+          combinedScore: 92,
           similarityMessage: 'Great match!',
           marketInsights: MarketInsights(
             totalEmployeesInTrack: 15000,
@@ -69,13 +67,19 @@ class CareerQuizResultModel {
 
 class TrackMatch {
   final TrackInfo track;
+
   final double trackSimilarityScore;
+
+  final double combinedScore;
+
   final String similarityMessage;
+
   final MarketInsights marketInsights;
 
   const TrackMatch({
     required this.track,
     required this.trackSimilarityScore,
+    required this.combinedScore,
     required this.similarityMessage,
     required this.marketInsights,
   });
@@ -84,6 +88,7 @@ class TrackMatch {
     return TrackMatch(
       track: TrackInfo.fromJson(Map<String, dynamic>.from(json['track'] ?? {})),
       trackSimilarityScore: _toDouble(json['trackSimilarityScore']),
+      combinedScore: _toDouble(json['combinedScore']),
       similarityMessage: (json['similarityMessage'] ?? '').toString(),
       marketInsights: MarketInsights.fromJson(
           Map<String, dynamic>.from(json['marketInsights'] ?? {})),
@@ -99,11 +104,17 @@ class TrackMatch {
 
 class TrackInfo {
   final int trackId;
+
   final String trackName;
+
   final String description;
+
   final String requiredSkills;
+
   final double score;
+
   final double maxScore;
+
   final double percentage;
 
   const TrackInfo({
@@ -115,6 +126,12 @@ class TrackInfo {
     required this.maxScore,
     required this.percentage,
   });
+
+  List<String> get requiredSkillsList => requiredSkills
+      .split(',')
+      .map((s) => s.trim())
+      .where((s) => s.isNotEmpty)
+      .toList(growable: false);
 
   factory TrackInfo.fromJson(Map<String, dynamic> json) {
     return TrackInfo(
@@ -142,15 +159,21 @@ class TrackInfo {
 
 class MarketInsights {
   final int totalEmployeesInTrack;
+
   final double avgTechnicalLevel;
+
   final double avgSoftSkills;
+
   final double avgSalarySatisfaction;
+
   final double avgWorkLifeBalance;
+
   final String mostCommonEnvironment;
+
   final String mostCommonCompanySize;
+
   final double avgYearsExperience;
   
-  // New metrics from JSON
   final double avgConsistency;
   final double avgAdaptability;
   final double avgTeamwork;
@@ -188,7 +211,11 @@ class MarketInsights {
       totalEmployeesInTrack: _toInt(json['totalEmployeesInTrack']),
       avgTechnicalLevel: _toDouble(json['avgTechnicalLevel']),
       avgSoftSkills: _toDouble(json['avgSoftSkills']),
-      avgSalarySatisfaction: _toDouble(json['avgSalarysatisfaction']),
+      // Backend key sometimes arrives with different casing.
+      // We support both: avgSalarySatisfaction / avgSalarysatisfaction
+      avgSalarySatisfaction: _toDouble(
+        json['avgSalarySatisfaction'] ?? json['avgSalarysatisfaction'],
+      ),
       avgWorkLifeBalance: _toDouble(json['avgWorkLifeBalance']),
       mostCommonEnvironment: (json['mostCommonEnvironment'] ?? '').toString(),
       mostCommonCompanySize: (json['mostCommonCompanySize'] ?? '').toString(),

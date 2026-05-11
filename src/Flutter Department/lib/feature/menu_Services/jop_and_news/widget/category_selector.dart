@@ -64,7 +64,6 @@ class CategorySelector extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      /// ICON
                       Icon(
                         _getCategoryIcon(category),
                         size: 16,
@@ -74,7 +73,6 @@ class CategorySelector extends StatelessWidget {
                       ),
               
                       const SizedBox(width: 2),
-                      /// TEXT
                       Text(
                         category,
                         style: TextStyle(
@@ -86,7 +84,6 @@ class CategorySelector extends StatelessWidget {
                         ),
                       ),
               
-                      /// CHECK ICON
                      
                     ],
                   ),

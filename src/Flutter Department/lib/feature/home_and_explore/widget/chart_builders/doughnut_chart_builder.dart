@@ -7,12 +7,11 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class DoughnutChartBuilder {
   const DoughnutChartBuilder._();
 
-  // ===== HIGH CONTRAST PROFESSIONAL PALETTE =====
 static const List<Color> chartColors = [
-    Color(0xFF004AAD), // Principal
-    Color(0xFF38B6FF), // Lead
-    Color(0xFF5271FF), // Senior
-    Color(0xFFBDE0FE), // Trainee
+    Color(0xFF004AAD), 
+    Color(0xFF38B6FF), 
+    Color(0xFF5271FF), 
+    Color(0xFFBDE0FE), 
   ];
 
   static Widget build(List<Map<String, dynamic>> rawData) {

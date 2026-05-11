@@ -27,7 +27,7 @@ class AnalyticsLogo extends StatelessWidget {
 }
 
 class _AnalyticsLogoPainter extends CustomPainter {
-  final Color color;//this  have  excaption
+  final Color color;
 
   _AnalyticsLogoPainter({
     required this.color,

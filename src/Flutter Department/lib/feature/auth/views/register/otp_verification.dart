@@ -74,12 +74,10 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {
         if (state is OtpVerified) {
-          // Save password before navigating to next screen
           context.read<RegisterCubit>().savePassword(widget.password);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('OTP verified successfully!')),
           );
-          // Remove OTP and email screens from navigation stack
           Navigator.pushNamedAndRemoveUntil(
             context,
             Routes.registerNameScreen,
@@ -175,7 +173,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         onChanged: (_) => setState(() {}),
                       ),
                       const SizedBox(height: 24),
-                      // Timer and Resend Section
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -195,7 +192,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                 duration: const Duration(minutes: 5),
                                 onTimerFinish: _onTimerFinish,
                                 onTick: (remaining) {
-                                  // Timer is running
                                 },
                               ),
                             ],
@@ -226,7 +222,6 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                     ],
                   ),
                   const SizedBox(height: 24),
-                  // Error message if OTP verification failed
                   if (state is OtpVerifyFailure)
                     Container(
                       padding: const EdgeInsets.all(12),

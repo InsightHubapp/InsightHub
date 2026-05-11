@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:InsightHub/core/constant/app_colors.dart';
 import 'package:InsightHub/core/constant/routes.dart';
-import 'package:InsightHub/feature/menu_Services/career_and_hr/cubit/match_cubit.dart';
 import 'package:InsightHub/feature/menu_Services/career_and_hr/cubit/question_cubit.dart';
 import 'package:InsightHub/feature/menu_Services/career_and_hr/widget/card_question_carrer.dart';
 import 'package:InsightHub/feature/menu_Services/career_and_hr/widget/widgets/quiz/quiz_error_view.dart';
@@ -42,6 +41,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
       );
 
       _didLoadQuestions = true;
+
+      // Auto-fetch on entry (e.g. user opened questions from Services Hub or tapped
+      // Retake from **Career Result** — non-employed only). Employed flow has no result
+      // screen / retake after submit; it ends at SurveyThankYouScreen.
+      final cubit = context.read<QuestionCubit>();
+      final current = cubit.state;
+      final shouldFetch =
+          current is! QuestionLoaded || current.isEmployed != isEmployed;
+
+      if (shouldFetch) {
+        _currentIndex = 0;
+        cubit.fetchQuestions(isEmployed: isEmployed);
+      }
     }
   }
 
@@ -109,10 +121,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
               Routes.surveyThankYouScreen,
             );
           } else {
-            if (state.submissionResult != null) {
-              context.read<MatchCubit>().emitResult(state.submissionResult);
-            }
-            Navigator.pushReplacementNamed(context, Routes.matchScreen);
+            Navigator.pushReplacementNamed(
+              context,
+              Routes.careerResultScreen,
+              arguments: state.careerResult,
+            );
           }
         }
       },

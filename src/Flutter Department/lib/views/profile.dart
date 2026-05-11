@@ -9,7 +9,7 @@ import 'package:InsightHub/feature/auth/cubit/login_cubit.dart';
 import 'package:InsightHub/feature/auth/cubit/register_cubit.dart';
 import 'package:InsightHub/feature/home_and_explore/cubit/dashboard_cubit.dart';
 import 'package:InsightHub/feature/home_and_explore/cubit/search_dashboard_cubit.dart';
-import 'package:InsightHub/feature/menu_Services/career_and_hr/cubit/match_cubit.dart';
+import 'package:InsightHub/feature/menu_Services/career_and_hr/cubit/career_result_cubit.dart';
 import 'package:InsightHub/feature/menu_Services/career_and_hr/cubit/question_cubit.dart';
 import 'package:InsightHub/feature/menu_Services/jop_and_news/cubit/jobs_cubit.dart';
 import 'package:InsightHub/feature/menu_Services/jop_and_news/cubit/news_cubit.dart';
@@ -59,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _clearSessionState() {
     context.read<ProfileCubit>().reset();
-    context.read<MatchCubit>().reset();
+    context.read<CareerResultCubit>().reset();
     context.read<QuestionCubit>().reset();
     context.read<HrQuestionCubit>().reset();
     context.read<LoginCubit>().reset();
@@ -173,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: const Color(0xFFF9FAFB),
         body: Container(
           decoration: BoxDecoration(
-            gradient: AppColors.bgGradient, // 👈 هنا
+            gradient: AppColors.bgGradient, 
           ),
           child: SafeArea(
             child: Column(

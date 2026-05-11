@@ -7,18 +7,15 @@ typedef WidgetBuilderFn = Widget Function(dynamic data);
 
 class WidgetFactory {
   static final Map<String, WidgetBuilderFn> _builders = {
-    /// Cards
     "cards": (data) =>
         DynamicCard(data: data is Map<String, dynamic> ? data : null),
 
-    /// Charts
     "line": (data) => ChartBuilders.buildLineChart(_extractList(data)),
     "bar": (data) => ChartBuilders.buildBarChart(_extractList(data)),
     "pie": (data) => ChartBuilders.buildPieChart(_extractList(data)),
     "doughnut": (data) => ChartBuilders.buildDoughnutChart(_extractList(data)),
     "treemap": (data) => ChartBuilders.buildTreemap(_extractList(data)),
     "column": (data) => ChartBuilders.buildColumnChart(_extractList(data)),
-    // "multiple bar": (data) => ChartBuilders.buildGroupedBarChart(_extractList(data)),
   };
 
   static Widget build(String type, dynamic data) {
@@ -55,7 +52,6 @@ class WidgetFactory {
     }
   }
 
-  /// 🔥 extract list from map['data']
   static List<Map<String, dynamic>> _extractList(dynamic data) {
     if (data is Map<String, dynamic>) {
       final list = data['data'];

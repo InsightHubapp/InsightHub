@@ -10,12 +10,12 @@ class DashboardFilterSelection {
   static const double defaultSalaryMax = 200000;
 
   static const List<String> categories = [
-    'Backend',
-    'Frontend',
+    'Backend Dev',
+    'Frontend Dev',
     'Q/A Testing',
     'Data Analysis',
     'AI/ML',
-    'Mobile',
+    'Mobile Dev',
     'Embedded',
     'Game Dev',
     'Cybersecurity',

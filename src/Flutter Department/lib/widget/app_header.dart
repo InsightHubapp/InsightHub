@@ -28,23 +28,19 @@ class AppHeader extends StatelessWidget {
     return Container(
       width: double.infinity,
 
-      /// 🎨 الشكل
      decoration: BoxDecoration(
   color: Colors.transparent,
 ),
 
-      /// 🔥 يمنع تداخل مع status bar
       child: SafeArea(
         bottom: false,
         child: Padding(
-          /// 👇 padding متوازن (مش كبير من تحت)
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
 
-              /// ===== Row =====
               Row(
                 children: [
                   if (leading != null) ...[
@@ -68,7 +64,7 @@ class AppHeader extends StatelessWidget {
                     child: Text(
                       title,
                       style: const TextStyle(
-                        fontSize: 24, // 👈 أصغر شوية
+                        fontSize: 24, 
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
@@ -79,7 +75,6 @@ class AppHeader extends StatelessWidget {
                 ],
               ),
 
-              /// ===== Subtitle =====
               if (subtitle != null) ...[
                 const SizedBox(height: 6),
                 Text(
@@ -91,7 +86,6 @@ class AppHeader extends StatelessWidget {
                 ),
               ],
 
-              /// ===== Extra =====
               if (extra != null) ...[
                 const SizedBox(height: 14),
                 extra!,

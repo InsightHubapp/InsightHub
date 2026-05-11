@@ -80,7 +80,6 @@ class NewsCard extends StatelessWidget {
     );
   }
 
-  // 👇 جوه الكارد
   Widget _placeholder() {
     return Container(
       height: 150,

@@ -92,7 +92,6 @@ class _SplashScreenState extends State<SplashScreen>
 
   if (token != null &&
       token.isNotEmpty) {
-    // YES -> fetchProfile() (إجباري)
 
     if (!mounted) return;
 
@@ -102,7 +101,6 @@ class _SplashScreenState extends State<SplashScreen>
       (route) => false,
     );
   } else {
-    // NO -> Login/Register
 
     final nextRoute = onboardingSeen
         ? Routes.welcomeScreen

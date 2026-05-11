@@ -94,7 +94,6 @@ class _AnswerHrScreenState extends State<AnswerHrScreen>
               position: _slideAnimation,
               child: Column(
                 children: [
-                  /// ───────────────── HEADER (FIXED) ─────────────────
                   AppHeader(
                     title: widget.categoryName,
                     subtitle: 'Review your answers below',
@@ -112,7 +111,6 @@ class _AnswerHrScreenState extends State<AnswerHrScreen>
                     ),
                   ),
 
-                  /// ───────────────── BODY ─────────────────
                   Expanded(
                     child: CustomScrollView(
                       physics: const BouncingScrollPhysics(),
@@ -126,7 +124,6 @@ class _AnswerHrScreenState extends State<AnswerHrScreen>
                           ),
                           sliver: SliverList(
                             delegate: SliverChildListDelegate([
-                              /// Score Card
                               _ScoreCard(
                                 correct: _correctCount,
                                 total: _total,
@@ -135,7 +132,6 @@ class _AnswerHrScreenState extends State<AnswerHrScreen>
 
                               const SizedBox(height: 24),
 
-                              /// Section Label
                               const Padding(
                                 padding: EdgeInsets.only(bottom: 14),
                                 child: Text(
@@ -148,7 +144,6 @@ class _AnswerHrScreenState extends State<AnswerHrScreen>
                                 ),
                               ),
 
-                              /// Question Cards
                               ...widget.result.correctAnswers.map(
                                 (item) => Padding(
                                   padding: const EdgeInsets.only(bottom: 14),
@@ -158,7 +153,6 @@ class _AnswerHrScreenState extends State<AnswerHrScreen>
 
                               const SizedBox(height: 10),
 
-                              /// Done Button
                               ElevatedButton.icon(
                                 onPressed: () => Navigator.pop(context),
                                 icon: const Icon(Icons.check),
@@ -194,9 +188,6 @@ class _AnswerHrScreenState extends State<AnswerHrScreen>
   }
 }
 
-/// ─────────────────────────────────────────────────────────────
-/// Score Card
-/// ─────────────────────────────────────────────────────────────
 class _ScoreCard extends StatelessWidget {
   final int correct;
   final int total;
@@ -241,7 +232,6 @@ class _ScoreCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          /// Circular progress
           SizedBox(
             width: 96,
             height: 96,
@@ -309,9 +299,6 @@ class _ScoreCard extends StatelessWidget {
   }
 }
 
-/// ─────────────────────────────────────────────────────────────
-/// Question Card
-/// ─────────────────────────────────────────────────────────────
 class _QuestionCard extends StatelessWidget {
   final dynamic item;
 
@@ -348,7 +335,6 @@ class _QuestionCard extends StatelessWidget {
         crossAxisAlignment:
             CrossAxisAlignment.start,
         children: [
-          /// Status row
           Row(
             children: [
               Container(
@@ -391,7 +377,6 @@ class _QuestionCard extends StatelessWidget {
 
               const Spacer(),
 
-              /// Difficulty badge
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
@@ -416,7 +401,6 @@ class _QuestionCard extends StatelessWidget {
 
           const SizedBox(height: 14),
 
-          /// Question
           Text(
             item.question,
             style: const TextStyle(
@@ -429,7 +413,6 @@ class _QuestionCard extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          /// Answer comparison
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
@@ -443,7 +426,6 @@ class _QuestionCard extends StatelessWidget {
               crossAxisAlignment:
                   CrossAxisAlignment.start,
               children: [
-                /// Your answer
                 Row(
                   crossAxisAlignment:
                       CrossAxisAlignment.start,
@@ -492,7 +474,6 @@ class _QuestionCard extends StatelessWidget {
                 if (!isCorrect) ...[
                   const Divider(height: 20),
 
-                  /// Correct answer
                   Row(
                     crossAxisAlignment:
                         CrossAxisAlignment.start,
@@ -543,7 +524,6 @@ class _QuestionCard extends StatelessWidget {
 
           const SizedBox(height: 14),
 
-          /// Explanation
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(14),

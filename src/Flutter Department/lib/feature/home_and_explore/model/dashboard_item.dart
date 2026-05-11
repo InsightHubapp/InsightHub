@@ -15,7 +15,6 @@ class DashboardItem {
     required this.data,
   });
 
-  /// 🔥 Factory (Crash-proof + Clean)
   factory DashboardItem.fromJson(Map<String, dynamic>? json) {
     try {
       if (json == null || json.isEmpty) {
@@ -37,7 +36,6 @@ class DashboardItem {
     }
   }
 
-  /// 🔁 Normalize backend types
   static String _normalizeType(String type) {
     switch (type.toLowerCase().trim()) {
       case "card":
@@ -49,7 +47,6 @@ class DashboardItem {
     }
   }
 
-  /// 🔴 fallback object (no crash)
   factory DashboardItem.fallback() {
     return const DashboardItem(
       id: 'invalid',
@@ -61,7 +58,6 @@ class DashboardItem {
     );
   }
 
-  /// 💀 Dummy object for skeletonizer
   factory DashboardItem.dummyCard() {
     return const DashboardItem(
       id: 'dummy_card',
@@ -84,6 +80,5 @@ class DashboardItem {
     );
   }
 
-  /// 🧠 Helper
   bool get isValid => type != 'unknown';
 }

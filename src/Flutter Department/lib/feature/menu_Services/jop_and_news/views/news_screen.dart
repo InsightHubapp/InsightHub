@@ -48,7 +48,7 @@ class _NewsScreenState extends State<NewsScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: AppColors.bgGradient, // 👈 هنا
+          gradient: AppColors.bgGradient, 
         ),
         child: SafeArea(
           child: Column(
@@ -59,7 +59,6 @@ class _NewsScreenState extends State<NewsScreen> {
                 showBackButton: true,
               ),
 
-              // 🔥 CATEGORY BAR (Fixed)
               BlocBuilder<NewsCubit, NewsState>(
                 builder: (context, state) {
                   final cubit = context.read<NewsCubit>();

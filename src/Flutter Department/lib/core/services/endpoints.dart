@@ -13,26 +13,21 @@ class Endpoints {
   static const String sendOtp = '/Account/send-otp';
   static const String verifyOtp = '/Account/verify-otp';
 
-  // Employee Survey Flow
   static const String questions = '/Survey/questions';
   static const String answers = '/Survey/submit';
 
-  // Non-Employee Career Quiz Flow
   static const String careerQuizQuestions = '/CareerQuiz/questions';
   static const String careerQuizFullMatch = '/CareerQuiz/full-match';
   static const String careerQuizResult = '/CareerQuiz/result';
   static const String navigationStatus = '/UserSubmission/EmploymentStatus';
 
-  // Analysis Proxy Endpoints
 
   static const String analysisHome = '/AnalysisProxy/home';
   static const String analysisExplore = '/AnalysisProxy/explore';
 
-  // News/Jobs Endpoint
   static const String relatedJobs = '/News';
   static const String jobs = '/JobsOffers';
 
-  // Human Resources Endpoints
   static const String hrCategories = '/InterviewQuiz/Questions';
   static const String hrQuizSubmit = '/InterviewQuiz/Submit';
 }

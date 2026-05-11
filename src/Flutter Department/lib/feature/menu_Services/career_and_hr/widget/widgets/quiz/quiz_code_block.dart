@@ -45,7 +45,6 @@ class _QuizCodeBlockState extends State<QuizCodeBlock> {
     final codeText = widget.code.trimRight();
     final lang = widget.language?.trim().toLowerCase() ?? 'dart';
     
-    // Fallback if highlight package doesn't know the language
     final result = highlight.parse(codeText, language: lang);
     final nodes = result.nodes ?? [];
 
@@ -84,7 +83,6 @@ class _QuizCodeBlockState extends State<QuizCodeBlock> {
       lines.add(_CodeLine(currentLineSpans));
     }
 
-    // In case of empty string
     if (lines.isEmpty && codeText.isEmpty) {
       lines.add(_CodeLine([]));
     }
@@ -149,7 +147,6 @@ class _QuizCodeBlockState extends State<QuizCodeBlock> {
         final lineNumber = index + 1;
         return TableRow(
           children: [
-            // Line number (unselectable)
             SelectionContainer.disabled(
               child: Padding(
                 padding: const EdgeInsets.only(right: 16.0, left: 4.0),
@@ -163,7 +160,6 @@ class _QuizCodeBlockState extends State<QuizCodeBlock> {
                 ),
               ),
             ),
-            // Code content (soft wrapped, selectable)
             Text.rich(
               TextSpan(children: _lines[index].spans),
               style: defaultStyle,
@@ -194,7 +190,7 @@ class _QuizCodeBlockState extends State<QuizCodeBlock> {
       width: double.infinity,
       margin: const EdgeInsets.only(top: 14),
       decoration: BoxDecoration(
-        color: const Color(0xFF282C34), // Atom One Dark bg
+        color: const Color(0xFF282C34), 
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: const Color(0xFF3E4451)),
         boxShadow: [
@@ -209,7 +205,6 @@ class _QuizCodeBlockState extends State<QuizCodeBlock> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -257,7 +252,6 @@ class _QuizCodeBlockState extends State<QuizCodeBlock> {
             ),
           ),
           
-          // Body
           Stack(
             alignment: Alignment.bottomCenter,
             children: [

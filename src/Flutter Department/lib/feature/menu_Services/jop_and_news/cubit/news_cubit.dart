@@ -7,7 +7,6 @@ import 'package:InsightHub/core/services/endpoints.dart';
 class NewsCubit extends Cubit<NewsState> {
   final ApiService _apiService = ApiService();
 
-  // Filters
   List<String> _selectedCategories = [];
   String _searchQuery = '';
   DateTime? _startDate;
@@ -31,14 +30,12 @@ class NewsCubit extends Cubit<NewsState> {
 
   NewsCubit() : super(NewsInitial());
 
-  // Getters
   List<String> get selectedCategories => _selectedCategories;
   String get searchQuery => _searchQuery;
   DateTime? get startDate => _startDate;
   DateTime? get endDate => _endDate;
   String get sortBy => _sortBy;
 
-  // ================= FILTERS =================
 
   void setCategories(List<String> categories) {
     _selectedCategories = categories;
@@ -78,7 +75,6 @@ class NewsCubit extends Cubit<NewsState> {
         _sortBy != 'latest';
   }
 
-  // ================= CORE =================
 
   Future<void> loadNews({bool reset = false}) async {
     if (reset) {
@@ -102,21 +98,11 @@ class NewsCubit extends Cubit<NewsState> {
     final queryParams = _buildQueryParams(page);
     final body = _buildBody();
 
-    print('=== NEWS API REQUEST ===');
-    print('Endpoint: ${Endpoints.relatedJobs}');
-    print('Query Params: $queryParams');
-    print('Body: $body');
-    print('========================');
-
     final response = await _apiService.post(
       Endpoints.relatedJobs,
       queryParameters: queryParams,
       data: body,
     );
-
-    print('=== NEWS API RESPONSE ===');
-    print(response);
-    print('========================');
 
     if (response['success'] == true && response['data'] != null) {
       dynamic rawData = response['data'];
@@ -148,7 +134,7 @@ class NewsCubit extends Cubit<NewsState> {
       emit(NewsLoaded(
         newsList: allNews,
         currentPage: page,
-        totalPages: page + 1, // fallback
+        totalPages: page + 1, 
         totalCount: allNews.length,
         isLoadingMore: false,
         hasMorePages: newNews.length == _pageSize,
@@ -173,7 +159,6 @@ class NewsCubit extends Cubit<NewsState> {
     }
   }
 
-  // ================= HELPERS =================
 
   Map<String, dynamic> _buildQueryParams(int page) {
     return {

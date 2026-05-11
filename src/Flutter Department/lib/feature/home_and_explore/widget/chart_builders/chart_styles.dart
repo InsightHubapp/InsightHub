@@ -6,7 +6,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class ChartStyles {
   const ChartStyles._();
 
-  static const Color primaryChartColor =     Color(0xFF004AAD) // Principal
+  static const Color primaryChartColor =     Color(0xFF004AAD) 
 ;
   static const Color axisBorderColor = AppColors.border;
   static const Color mutedAxisLabelColor = Color(0xFF9CA3AF);

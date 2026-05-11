@@ -5,6 +5,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:InsightHub/widget/app_header.dart';
 import 'package:InsightHub/widget/app_motion.dart';
 
+
 class SurveyThankYouScreen extends StatelessWidget {
   const SurveyThankYouScreen({super.key});
 
@@ -15,7 +16,7 @@ class SurveyThankYouScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: AppColors.bgGradient, // 👈 هنا
+          gradient: AppColors.bgGradient,
         ),
         child: SafeArea(
           child: Column(
@@ -24,7 +25,6 @@ class SurveyThankYouScreen extends StatelessWidget {
                 title: 'Survey Complete',
                 subtitle: 'Thank you for sharing your insights.',
               ),
-              // Body
               Expanded(
                 child: AppMotion(
                   child: Center(
@@ -33,7 +33,6 @@ class SurveyThankYouScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Icon
                           Container(
                             width: 100,
                             height: 100,
@@ -58,7 +57,6 @@ class SurveyThankYouScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 32),
 
-                          // Title
                           const Text(
                             'Thank You!',
                             style: TextStyle(
@@ -69,7 +67,6 @@ class SurveyThankYouScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 14),
 
-                          // Message
                           const Text(
                             'Your survey responses have been recorded successfully. Since you are employed, your answers will help us improve our career matching for others.',
                             textAlign: TextAlign.center,
@@ -81,33 +78,30 @@ class SurveyThankYouScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 40),
 
-                          // Retake button
-                          const SizedBox(height: 14),
-
-                          // Back to home
                           SizedBox(
-  width: double.infinity,
-  child: ElevatedButton.icon(
-    onPressed: () {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        Routes.homeScreen,
-        (route) => false,
-      );
-    },
-    icon: const Icon(Icons.home_outlined),
-    label: const Text('Go to Home'),
-    style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.primaryBlue,
-      foregroundColor: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      elevation: 0,
-    ),
-  ),
-),
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  Routes.homeScreen,
+                                  (route) => false,
+                                );
+                              },
+                              icon: const Icon(Icons.home_outlined),
+                              label: const Text('Go to Home'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryBlue,
+                                foregroundColor: Colors.white,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                elevation: 0,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

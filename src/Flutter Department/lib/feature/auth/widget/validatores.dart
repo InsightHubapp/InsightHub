@@ -1,7 +1,6 @@
 import 'package:InsightHub/core/constant/app_strings.dart';
 
 class Validators {
-  // 🔹 Email (common)
   static String? email(String? value) {
     value = value?.trim();
 
@@ -18,7 +17,6 @@ class Validators {
     return null;
   }
 
-  // 🔹 Sign In Password (simple)
   static String? loginPassword(String? value) {
     if (value == null || value.isEmpty) {
       return AppStrings.passwordRequired;
@@ -26,7 +24,6 @@ class Validators {
     return null;
   }
 
-  // 🔹 Sign Up Password (strong)
   static String? strongPassword(String? value) {
     value = value?.trim();
 

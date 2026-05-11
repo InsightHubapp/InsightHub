@@ -6,7 +6,6 @@ import 'package:InsightHub/feature/auth/cubit/register_cubit.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class ConfirmationScreen extends StatelessWidget {
-  //make routname
   static const String routeName = '/confirmationScreen';
 
   const ConfirmationScreen({super.key});
@@ -24,7 +23,7 @@ class ConfirmationScreen extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFF0FDF4), // green-50
+              Color(0xFFF0FDF4), 
               Colors.white,
             ],
           ),
@@ -36,7 +35,6 @@ class ConfirmationScreen extends StatelessWidget {
             children: [
               const Spacer(),
 
-              // Success Icon
               const Icon(
                 LucideIcons.checkCircle,
                 size: 96,
@@ -70,13 +68,11 @@ class ConfirmationScreen extends StatelessWidget {
 
               const Spacer(),
 
-              // Home Button
               SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
                   onPressed: ()  {
-                    // Fetch profile after successful registration
                     
                     if (!context.mounted) return;
                     Navigator.pushNamedAndRemoveUntil(
@@ -86,7 +82,7 @@ class ConfirmationScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryBlue, // blue-600
+                    backgroundColor: AppColors.primaryBlue, 
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

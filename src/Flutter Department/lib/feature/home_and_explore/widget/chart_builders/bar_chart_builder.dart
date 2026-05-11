@@ -7,11 +7,11 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class BarChartBuilder {
   const BarChartBuilder._();
 static const List<Color> chartColors = [
-    Color(0xFF004AAD), // Principal
-    Color(0xFF38B6FF), // Lead
-    Color(0xFF5271FF), // Senior
-    Color(0xFFBDE0FE), // Trainee
-    Color.fromARGB(255, 216, 238, 253), // القيمة الخامسة والأصغر (Ice Blue)
+    Color(0xFF004AAD), 
+    Color(0xFF38B6FF), 
+    Color(0xFF5271FF), 
+    Color(0xFFBDE0FE), 
+    Color.fromARGB(255, 216, 238, 253), 
   ];
   static Widget build(List<Map<String, dynamic>> rawData) {
     try {

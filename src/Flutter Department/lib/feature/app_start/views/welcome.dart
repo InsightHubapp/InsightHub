@@ -30,9 +30,7 @@ class WelcomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                    
-                // Icon Circle 
                 AnalyticsLogo(),
-                // Title
                 SizedBox(height: 24),
                 const Text(
                   "Welcome",
@@ -45,7 +43,6 @@ class WelcomeScreen extends StatelessWidget {
       
                 const SizedBox(height: 12),
       
-                // Subtitle
                 const Text(
                   "Let's get started",
                   style: TextStyle(
@@ -57,7 +54,6 @@ class WelcomeScreen extends StatelessWidget {
       
                 const SizedBox(height: 60),
       
-                // Continue Button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -80,7 +76,6 @@ class WelcomeScreen extends StatelessWidget {
       
                 const SizedBox(height: 16),
       
-                // Login Text Button
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, Routes.signInScreen);

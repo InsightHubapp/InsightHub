@@ -1,4 +1,3 @@
-// job_card.dart
 import 'package:flutter/material.dart';
 import 'package:InsightHub/core/constant/app_colors.dart';
 import 'package:InsightHub/core/constant/app_shadow.dart';
@@ -34,7 +33,6 @@ class JobCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            /// 🔹 HEADER
             Row(
               children: [
                 _avatar(),
@@ -45,18 +43,15 @@ class JobCard extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            /// 🔹 LOCATION
             if ((job.location ?? '').isNotEmpty)
               _location(),
 
             const SizedBox(height: 8),
 
-            /// 🔹 BADGES
             _badges(salary, jobType),
 
             const SizedBox(height: 8),
 
-            /// 🔹 DESCRIPTION
             if (description.isNotEmpty)
               _description(description),
 
@@ -72,8 +67,8 @@ class JobCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         gradient: const LinearGradient(
           colors: [
-            Color(0xFF6C63FF), // start color
-            Color(0xFF4F46E5), // end color
+            Color(0xFF6C63FF), 
+            Color(0xFF4F46E5), 
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -98,7 +93,6 @@ class JobCard extends StatelessWidget {
     );
   }
 
-  /// 🔹 Avatar
   Widget _avatar() {
     return Container(
       height: 44,
@@ -121,7 +115,6 @@ class JobCard extends StatelessWidget {
     );
   }
 
-  /// 🔹 Title + Company
   Widget _titleSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,7 +140,6 @@ class JobCard extends StatelessWidget {
     );
   }
 
-  /// 🔹 Location
   Widget _location() {
     return Row(
       children: [
@@ -166,7 +158,6 @@ class JobCard extends StatelessWidget {
     );
   }
 
-  /// 🔹 Badges
   Widget _badges(String? salary, String? jobType) {
     return Row(
       children: [
@@ -179,7 +170,6 @@ class JobCard extends StatelessWidget {
     );
   }
 
-  /// 🔹 Description
   Widget _description(String description) {
     return Text(
       description,
@@ -192,7 +182,6 @@ class JobCard extends StatelessWidget {
     );
   }
 
-  /// 🔹 Badge
   Widget _badge(String text, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -211,7 +200,6 @@ class JobCard extends StatelessWidget {
     );
   }
 
-  /// 🔧 Helpers
   String? _extractSalary(String text) {
     final regex = RegExp(r'[\$£€]\s?[\d,]+');
     return regex.firstMatch(text)?.group(0);

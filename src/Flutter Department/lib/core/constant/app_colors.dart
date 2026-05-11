@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 class AppColors {
-  // ===== New System (Clean) =====
-
-  static const primary = Color(0xFF2563EB);//static const primary = Color(0xFF2563EB);
+  static const primary = Color(0xFF2563EB);
   static const primaryDark = Color(0xFF1D4ED8);
   static const success = Color.fromARGB(255, 56, 90, 91);
-//  static const success = Color(0xFF2563EB);
   static const scaffoldBg = Color(0xFFF9FAFB);
   static const cardBg = Color(0xFFFFFFFF);
   static const softBlue = Color(0xFFEFF6FF);
@@ -20,9 +17,6 @@ class AppColors {
   static const chipBorder = Color(0xFFD1D5DB);
 
   static const disabled = Color(0xFFD1D5DB);
-
-  // ===== OLD NAMES (Compatibility Layer) =====
-  // 👇 ده اللي هيصلح التطبيق كله بدون ما تكسر أي حاجة
 
   static const primaryBlue = primary;
   

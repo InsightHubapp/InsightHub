@@ -51,7 +51,6 @@ class BaseContainer extends StatelessWidget {
           isCompact ? 12.0 : 18.0,
         ),
 
-        // ✅ FIXED
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -104,7 +103,6 @@ class BaseContainer extends StatelessWidget {
                 height: isCompact ? 12.0 : 16.0,
               ),
 
-              // ✅ FIXED
               Container(
                 padding: EdgeInsets.all(
                   isCompact ? 10.0 : 12.0,

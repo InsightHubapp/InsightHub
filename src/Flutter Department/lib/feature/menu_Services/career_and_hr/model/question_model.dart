@@ -66,7 +66,6 @@ class QuestionModel {
       if (item is Map) {
         options.add(OptionModel.fromJson(Map<String, dynamic>.from(item)));
       } else {
-        // Fallback for simple string options
         options.add(OptionModel(
           id: i,
           text: item.toString(),

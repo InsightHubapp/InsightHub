@@ -55,7 +55,6 @@ class DynamicCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── TOP: Rounded icon container ───────────────────────────────
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -67,7 +66,6 @@ class DynamicCard extends StatelessWidget {
 
             const SizedBox(height: 8),
 
-            // ── MIDDLE: Title & Subtitle ──────────────────────────────────
             if (title.isNotEmpty)
               Text(
                 title,
@@ -94,7 +92,6 @@ class DynamicCard extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            // ── BOTTOM: Metric Value + Suffix ─────────────────────────────
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -129,7 +126,6 @@ class DynamicCard extends StatelessWidget {
               ],
             ),
 
-            // ── Optional Trend Indicator ──────────────────────────────────
             if (hasPositiveTrend || hasNegativeTrend) ...[
               const SizedBox(height: 12),
               Row(

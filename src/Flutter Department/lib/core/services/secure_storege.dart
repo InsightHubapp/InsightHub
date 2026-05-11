@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-/// Wraps secure storage with app-specific recovery behavior.
 @immutable
 class SecureStorage {
   const SecureStorage._();

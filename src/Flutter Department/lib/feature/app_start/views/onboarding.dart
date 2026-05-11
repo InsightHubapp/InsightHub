@@ -124,7 +124,6 @@ class _OnboardingScreenState
           ),
           child: Column(
             children: [
-              /// TOP BAR
               Row(
                 mainAxisAlignment:
                     MainAxisAlignment
@@ -213,7 +212,6 @@ class _OnboardingScreenState
 
               const SizedBox(height: 20),
 
-              /// PAGE INDICATOR
               Row(
                 mainAxisAlignment:
                     MainAxisAlignment.center,
@@ -255,7 +253,6 @@ class _OnboardingScreenState
 
               const SizedBox(height: 28),
 
-              /// BUTTON
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -316,7 +313,6 @@ class _OnboardingPage
         crossAxisAlignment:
             CrossAxisAlignment.start,
         children: [
-          /// MAIN CARD
           Container(
             width: double.infinity,
             padding:
@@ -358,7 +354,6 @@ class _OnboardingPage
                   CrossAxisAlignment
                       .start,
               children: [
-                /// HEADER
                 Row(
                   children: [
                     AnalyticsLogo(
@@ -419,7 +414,6 @@ class _OnboardingPage
                   height: 28,
                 ),
 
-                /// ANALYTICS DASHBOARD
                 Container(
                   width:
                       double.infinity,
@@ -447,7 +441,6 @@ class _OnboardingPage
                   ),
                   child: Column(
                     children: [
-                      /// HEADER
                       Row(
                         children: [
                           AnalyticsLogo(
@@ -560,7 +553,6 @@ class _OnboardingPage
                         height: 24,
                       ),
 
-                      /// METRICS
                       Row(
                         children: [
                           Expanded(
@@ -601,7 +593,6 @@ class _OnboardingPage
                         height: 28,
                       ),
 
-                      /// CHART
                       Container(
                         height: 220,
                         padding:
@@ -706,7 +697,6 @@ class _OnboardingPage
                         height: 24,
                       ),
 
-                      /// TAGS
                       Wrap(
                         spacing: 10,
                         runSpacing: 10,

@@ -73,7 +73,6 @@ class _MenuHrCategoriesScreenState extends State<MenuHrCategoriesScreen> {
                                   ),
                                 );
                               } else {
-                                // Error is emitted by cubit, might want to show snackbar here if not handled elsewhere
                               }
 
                               if (mounted) {

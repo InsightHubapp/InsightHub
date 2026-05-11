@@ -26,7 +26,6 @@ class _JobsScreenState extends State<JobsScreen> {
   void initState() {
     super.initState();
 
-    /// Pagination
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 200) {
@@ -50,7 +49,6 @@ class _JobsScreenState extends State<JobsScreen> {
     super.dispose();
   }
 
-  // ================= UI =================
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +56,7 @@ class _JobsScreenState extends State<JobsScreen> {
       backgroundColor: AppColors.scaffoldBg,
       body: Container(
         decoration: BoxDecoration(
-          gradient: AppColors.bgGradient, // 👈 هنا
+          gradient: AppColors.bgGradient, 
         ),
         child: SafeArea(
           child: Column(

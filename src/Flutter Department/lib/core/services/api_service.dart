@@ -36,11 +36,9 @@ class ApiService {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           final token = await SecureStorage.readData(key: tokenKey);
-            print("🔥 TOKEN FROM STORAGE: $token"); // 👈 هنا
 
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
-              print("🔥 Added Authorization header to request: Bear  ""$token"); // 👈 هنا
           }
           return handler.next(options);
         },
@@ -104,7 +102,6 @@ class ApiService {
 
     try {
       await SecureStorage.deleteData(key: tokenKey);
-      print("🔥 Unauthorized detected. Token cleared from storage."); // 👈 هنا
       unauthorizedNotifier.value++;
     } finally {
       _isHandlingUnauthorized = false;
@@ -156,7 +153,6 @@ class ApiService {
     String endpoint, {
     Map<String, dynamic>? queryParameters,
   }) {
-    print("ApiService: GET request to $endpoint, params: $queryParameters");
     return _handleRequest(
       _dio.get(endpoint, queryParameters: queryParameters),
     );
@@ -209,16 +205,10 @@ class ApiService {
   Future<List<QuestionModel>> fetchQuestions({required bool isEmployed}) async {
     final endpoint = isEmployed ? Endpoints.questions : Endpoints.careerQuizQuestions;
     
-    print("ApiService: fetchQuestions called for ${isEmployed ? 'employed' : 'non-employed'} using endpoint: $endpoint");
-
-    // For the existing employee flow, we keep the 'target' query parameter if it was used.
-    // For the new career quiz flow, we hit the endpoint directly.
     final result = await get(
       endpoint,
       queryParameters: isEmployed ? {'target': 'employed'} : null,
     );
-
-    print("ApiService: fetchQuestions result success: ${result['success']}");
 
     if (result['success'] != true) {
       throw Exception(result['error']?.toString() ?? 'Failed to load questions.');
@@ -231,37 +221,48 @@ class ApiService {
         .toList();
   }
 
-  Future<dynamic> submitAnswers({
-    required Map<int, dynamic> answers,
-    required bool isEmployed,
-  }) async {
-    final payload = {
+  Map<String, dynamic> _buildAnswersPayload(Map<int, int> answers) {
+    return {
       'answers': answers.entries
           .map(
             (entry) => {
               'questionId': entry.key,
-              'answerValue': entry.value is int
-                  ? entry.value
-                  : int.tryParse('${entry.value}') ?? 0,
+              'answerValue': entry.value,
             },
           )
           .toList(),
     };
+  }
 
-    final endpoint = isEmployed ? Endpoints.answers : Endpoints.careerQuizFullMatch;
-    final result = await post(endpoint, data: payload);
+  Future<void> submitEmployedSurveyAnswers({required Map<int, int> answers}) async {
+    final payload = _buildAnswersPayload(answers);
+    final result = await post(Endpoints.answers, data: payload);
 
     if (result['success'] != true) {
-      throw Exception(result['error']?.toString() ?? 'Failed to submit answers.');
-    }
-
-    if (!isEmployed && result['data'] != null) {
-      return CareerQuizResultModel.fromJson(
-        Map<String, dynamic>.from(result['data']),
+      throw Exception(
+        result['error']?.toString() ?? 'Failed to submit survey answers.',
       );
     }
-    
-    return null;
+  }
+
+  Future<CareerQuizResultModel> submitCareerQuizAnswers({
+    required Map<int, int> answers,
+  }) async {
+    final payload = _buildAnswersPayload(answers);
+    final result = await post(Endpoints.careerQuizFullMatch, data: payload);
+
+    if (result['success'] != true) {
+      throw Exception(
+        result['error']?.toString() ?? 'Failed to submit career quiz answers.',
+      );
+    }
+
+    final data = result['data'];
+    if (data is! Map) {
+      throw Exception('Invalid career quiz result format.');
+    }
+
+    return CareerQuizResultModel.fromJson(Map<String, dynamic>.from(data));
   }
 
   Future<CareerQuizResultModel?> fetchCareerQuizResult() async {
