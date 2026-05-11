@@ -189,8 +189,8 @@ Use [env example.txt](https://github.com/InsightHubapp/InsightHub/blob/main/src/
 Recommended local template:
 
 ```dotenv
-ADZUNA_API_ID=your_adzuna_app_id
-ADZUNA_APP_KEY=your_adzuna_api_key
+ADZUNA_API_ID=your_adzuna_api_id
+ADZUNA_APP_KEY=your_adzuna_app_key
 
 ANALYST_HOST=127.0.0.1
 CHARTS_PORT=8000
@@ -476,7 +476,7 @@ flowchart LR
 
 ### Database Design
 
-Primary persistence is implemented through [AppDbContext.cs](</D:/Graduation Projects/Comp Project/InsightHub/src/Backend Department/InsightHub.Infrastructure/Persistence/AppDbContext.cs>).
+Primary persistence is implemented through [AppDbContext.cs](https://github.com/InsightHubapp/InsightHub/blob/main/src/Backend%20Department/InsightHub.Infrastructure/Persistence/AppDbContext.cs).
 
 Key persisted entities:
 
