@@ -156,6 +156,7 @@ Important runtime behavior:
 - Hangfire server starts automatically.
 - Seed routines run on startup.
 - `DummyDataSeeder` may create a substantial set of dummy market users on first run.
+- Rate limiting is enabled through `RateLimitPolicies` and applied to account and assessment-related flows.
 
 ### 3. Analytics Service Setup
 
@@ -374,6 +375,38 @@ Key controllers:
 | `NewsController` | Track-based article retrieval |
 | `JobOffersController` | Track-based jobs retrieval |
 | `AnalysisProxyController` | Proxies home and explore analytics requests to FastAPI |
+
+Primary API surface:
+
+| Method | Endpoint | Purpose | Auth |
+| --- | --- | --- | --- |
+| `POST` | `/api/Account/register` | Register account | Public |
+| `POST` | `/api/Account/login` | Login and get token | Public |
+| `POST` | `/api/Account/send-otp` | Request OTP | Public |
+| `POST` | `/api/Account/verify-otp` | Verify OTP | Public |
+| `POST` | `/api/Account/EmailExistance` | Check email existence | Public |
+| `POST` | `/api/Account/logout` | Logout | Authenticated |
+| `GET` | `/api/Account/profile` | Get profile | Authenticated |
+| `PUT` | `/api/Account/UpdateProfile` | Update profile | Authenticated |
+| `DELETE` | `/api/Account/DeleteAccount` | Delete account | Authenticated |
+| `GET` | `/api/Survey/questions` | Employee survey questions | Authenticated |
+| `POST` | `/api/Survey/submit` | Submit employee survey | Authenticated |
+| `GET` | `/api/CareerQuiz/questions` | Career quiz questions | Authenticated |
+| `POST` | `/api/CareerQuiz/full-match` | Submit career quiz answers and match | Authenticated |
+| `GET` | `/api/CareerQuiz/result` | Get stored career result | Authenticated |
+| `POST` | `/api/InterviewQuiz/Questions` | Get interview questions by track | Authenticated |
+| `POST` | `/api/InterviewQuiz/Submit` | Submit interview answers | Authenticated |
+| `GET` | `/api/UserSubmission/EmploymentStatus` | Get employment-status navigation state | Authenticated |
+| `GET` | `/api/AnalysisProxy/home` | Personalized dashboard home payload | Authenticated |
+| `POST` | `/api/AnalysisProxy/explore` | Filtered dashboard explore payload | Authenticated |
+| `POST` | `/api/News` | Get related news by categories/tracks | Public/API-level |
+| `POST` | `/api/JobsOffers` | Get related jobs by categories/tracks | Public/API-level |
+
+Backend runtime orchestration:
+
+- `AnalysisProxyController` enriches analytics requests with user track context before forwarding to FastAPI.
+- Hangfire schedules recurring jobs for job sync, news ingestion, and interview-question sync.
+- Startup seeding runs both structural seed data and market dummy data.
 
 Key backend services:
 
