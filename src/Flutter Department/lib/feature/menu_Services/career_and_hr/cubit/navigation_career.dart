@@ -43,23 +43,17 @@ class NavigationCubit extends Cubit<NavigationState> {
   }
 
   Future<NavigationSuccess?> decideAsync() async {
-    print('NavigationCubit.decideAsync() called');
     emit(const NavigationLoading());
 
     try {
-      print('Calling fetchNavigationStatus...');
       final status = await api.fetchNavigationStatus();
-      print('fetchNavigationStatus success: isEmployed=${status.isEmployed}, hasCompleted=${status.hasCompletedAssessment}');
 
       final target = _computeTarget(status);
-      print('Navigation target computed: $target');
-      print('Emitting NavigationSuccess with isEmployed=${status.isEmployed}');
       
       final successState = NavigationSuccess(target, status.isEmployed);
       emit(successState);
       return successState;
     } catch (error) {
-      print('NavigationCubit error: $error');
       emit(NavigationError(_errorMessage(error)));
       return null;
     }

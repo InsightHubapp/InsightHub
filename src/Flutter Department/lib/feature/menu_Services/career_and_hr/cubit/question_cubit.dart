@@ -87,11 +87,8 @@ class QuestionCubit extends Cubit<QuestionState> {
   }
 
   Future<bool> fetchQuestionsAsync({required bool isEmployed}) async {
-    print(
-      "QuestionCubit: fetchQuestionsAsync called (isEmployed: $isEmployed), current state: $state",
-    );
+  
     if (state is QuestionLoading) {
-      print("QuestionCubit: Already loading, skipping request.");
       return false;
     }
     emit(const QuestionLoading());
@@ -116,7 +113,6 @@ class QuestionCubit extends Cubit<QuestionState> {
 
   void answerQuestion(int questionId, Object? value) {
     final normalized = value is int ? value : int.tryParse('$value') ?? 0;
-    print("Q:$questionId → value:$value (normalized=$normalized)");
     final currentState = state;
     if (currentState is! QuestionLoaded) {
       return;

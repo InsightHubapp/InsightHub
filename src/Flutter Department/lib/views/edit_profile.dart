@@ -29,7 +29,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   bool isEmployed = false;
   int? selectedJob;
   int? selectedExperience;
-  int? _lastSelectedJob;
+  // ignore: unused_field
+  int? _lastSelectedJob;//
+  // ignore: unused_field
   int? _lastSelectedExperience;
   bool _didPrefill = false;
   

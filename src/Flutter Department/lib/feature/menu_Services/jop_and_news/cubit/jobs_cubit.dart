@@ -13,7 +13,7 @@ class JobsCubit extends Cubit<JobsState> {
   DateTime? _endDate;
   String _sortBy = 'latest';
 
-  int _pageSize = 15;
+ final int _pageSize = 15;
 
   static const List<String> categories = [
     'Backend Dev',

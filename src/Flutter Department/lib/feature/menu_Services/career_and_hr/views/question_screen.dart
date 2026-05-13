@@ -36,15 +36,11 @@ class _QuestionScreenState extends State<QuestionScreen> {
       isEmployed =
           ModalRoute.of(context)?.settings.arguments as bool? ?? false;
 
-      print(
-        'QuestionScreen: received navigation argument isEmployed=$isEmployed',
-      );
+  
 
       _didLoadQuestions = true;
 
-      // Auto-fetch on entry (e.g. user opened questions from Services Hub or tapped
-      // Retake from **Career Result** — non-employed only). Employed flow has no result
-      // screen / retake after submit; it ends at SurveyThankYouScreen.
+
       final cubit = context.read<QuestionCubit>();
       final current = cubit.state;
       final shouldFetch =

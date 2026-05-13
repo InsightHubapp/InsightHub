@@ -26,16 +26,13 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _handleContinue() {
-  print("LOGIN CLICKED");
 
   final formState = _formKey.currentState;
 
   if (formState == null || !formState.validate()) {
-    print("FORM INVALID");
     return;
   }
 
-  print("CALLING LOGIN");
 
   context.read<LoginCubit>().login(
     _emailController.text.trim(),

@@ -90,7 +90,7 @@ static const List<Color> chartColors = [
       yValueMapper: (data, _) => ChartHelpers.value(data),
     pointColorMapper: (data, index) {
   final baseColor =
-      chartColors[index! % chartColors.length];
+      chartColors[index % chartColors.length];
 
   if (selectedIndex == null) {
     return baseColor;

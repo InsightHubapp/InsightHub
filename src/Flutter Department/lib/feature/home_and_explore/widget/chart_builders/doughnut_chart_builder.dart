@@ -70,7 +70,7 @@ static const List<Color> chartColors = [
 
                 pointColorMapper: (_, index) {
                   return chartColors[
-                      index! % chartColors.length];
+                      index % chartColors.length];
                 },
 
                 dataLabelMapper: (data, _) {

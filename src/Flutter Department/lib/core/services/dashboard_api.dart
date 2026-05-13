@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:InsightHub/core/services/api_service.dart';
-import 'package:InsightHub/model/app_error.dart';
 
 class DashboardApi {
   final ApiService _apiService;

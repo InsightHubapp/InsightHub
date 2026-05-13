@@ -64,6 +64,7 @@ class _MenuHrCategoriesScreenState extends State<MenuHrCategoriesScreen> {
                               if (!mounted) return;
 
                               if (success) {
+                                // ignore: use_build_context_synchronously
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (_) => QuestionHrScreen(

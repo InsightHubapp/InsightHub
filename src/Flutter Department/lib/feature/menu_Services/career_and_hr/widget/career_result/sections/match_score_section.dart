@@ -10,7 +10,6 @@ class MatchScoreSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final track = trackMatch.track;
 
     return SectionCard(
       padding: const EdgeInsets.all(16),
@@ -79,6 +78,7 @@ class MatchScoreSection extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _SmallStat extends StatelessWidget {
   final String label;
   final String value;

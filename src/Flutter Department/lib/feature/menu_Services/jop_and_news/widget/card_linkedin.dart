@@ -43,7 +43,7 @@ class JobCard extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            if ((job.location ?? '').isNotEmpty)
+            if ((job.location ).isNotEmpty)
               _location(),
 
             const SizedBox(height: 8),
@@ -147,7 +147,7 @@ class JobCard extends StatelessWidget {
         const SizedBox(width: 4),
         Expanded(
           child: Text(
-            job.location!,
+            job.location,
             style: const TextStyle(
               fontSize: 11,
               color: AppColors.textSecondary,
